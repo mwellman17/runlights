@@ -2,6 +2,28 @@ Manufacturer.destroy_all
 Fixture.destroy_all
 Mode.destroy_all
 
+def get_footprint(file, mode)
+  chan = mode['channels']
+  base_count = chan.count {|item| item.is_a?(String) || item.nil? }
+  if base_count == chan.length
+    return base_count
+  else
+    matrix = chan.find {|item| item.is_a?(Hash) }
+    temp_channels = matrix['templateChannels'].length
+    if matrix['repeatFor'].is_a?(Array)
+      multiplier = matrix['repeatFor'].length
+      return multiplier * temp_channels + base_count
+    elsif file['matrix']['pixelCount']
+      multiplier = 1
+      file['matrix']['pixelCount'].each {|item| multiplier *= item }
+      return multiplier * temp_channels + base_count
+    else
+      multiplier = file['matrix']['pixelKeys'].flatten.length
+      return multiplier * temp_channels + base_count
+    end
+  end
+end
+
 Dir.foreach('./fixtures') do |directory|
   next if directory == '.' or directory == '..'
   manufacturer = Manufacturer.create!({ name: directory })
@@ -34,14 +56,20 @@ Dir.foreach('./fixtures') do |directory|
       file['modes'].each do |mode|
         mode_name = mode['name']
         mode_short_name = mode['short_name']
-        footprint = mode['channels'].length
         Mode.create!({
           name: mode_name,
           short_name: mode_short_name,
-          footprint: footprint,
+          footprint: get_footprint(file, mode),
           fixture: fixture
         })
       end
+    else
+      Mode.create!({
+        name: "NA",
+        footprint: 1,
+        fixture: fixture
+      })
     end
+
   end
 end
