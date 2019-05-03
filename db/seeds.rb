@@ -2,7 +2,7 @@ Manufacturer.destroy_all
 Fixture.destroy_all
 Mode.destroy_all
 
-olp = User.create!(username: "OFL", email: "email@example.com", password: "password")
+ofl = User.create!(username: "OFL", email: "email@example.com", password: "password")
 
 def get_footprint(file, mode)
   chan = mode['channels']
@@ -53,7 +53,7 @@ Dir.foreach('./fixtures') do |directory|
       weight: weight,
       wattage: wattage,
       manufacturer: manufacturer,
-      user: olp
+      user: ofl
     })
     if file['modes']
       file['modes'].each do |mode|
