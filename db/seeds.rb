@@ -2,7 +2,7 @@ Manufacturer.destroy_all
 Fixture.destroy_all
 Mode.destroy_all
 
-ofl = User.create!(username: "OFL", email: "email@example.com", password: "password")
+ofl = User.find_by(username: "OFL")
 
 def get_footprint(file, mode)
   chan = mode['channels']

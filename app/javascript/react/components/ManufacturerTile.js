@@ -29,7 +29,7 @@ class ManufacturerTile extends Component {
     }
 
     return(
-      <div onClick={this.toggleFixtures} className="fixture column panel callout small-12 medium-4">
+      <div onClick={this.toggleFixtures} className="fixture column panel callout small-12">
         <p>{this.props.name.toUpperCase()}</p>
         <ul>
           {fixtures}
