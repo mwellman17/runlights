@@ -22,9 +22,11 @@ ActiveRecord::Schema.define(version: 2019_05_01_012659) do
     t.float "weight"
     t.integer "wattage"
     t.bigint "manufacturer_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["manufacturer_id"], name: "index_fixtures_on_manufacturer_id"
+    t.index ["user_id"], name: "index_fixtures_on_user_id"
   end
 
   create_table "manufacturers", force: :cascade do |t|
@@ -44,6 +46,7 @@ ActiveRecord::Schema.define(version: 2019_05_01_012659) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "username", default: "", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

@@ -2,6 +2,7 @@ class Fixture < ApplicationRecord
   validates :name, presence: true
 
   belongs_to :manufacturer
+  belongs_to :user
   has_many :modes
 
   def mode_list

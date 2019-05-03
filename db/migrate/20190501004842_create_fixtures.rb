@@ -7,6 +7,7 @@ class CreateFixtures < ActiveRecord::Migration[5.2]
       t.float :weight
       t.integer :wattage
       t.belongs_to :manufacturer
+      t.belongs_to :user
 
       t.timestamps
     end
