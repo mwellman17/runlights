@@ -2,6 +2,16 @@
   background-color: #FAC100;
   border: 2px solid black;
 }
+
 .top-button {
   float: left;
+}
+
+.hidden {
+  visibility: hidden;
+  display: none;
+}
+
+.visible {
+  visibility: visible;
 }

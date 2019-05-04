@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import FixtureTile from './FixtureTile'
 
 class ManufacturerTile extends Component {
   constructor(props) {
@@ -23,13 +24,19 @@ class ManufacturerTile extends Component {
     if (this.state.showFixtures){
       fixtures = this.props.fixtures.map(fixture => {
         return(
-          <li key={fixture.id}>{fixture.name}</li>
+          <FixtureTile
+            key={fixture.id}
+            name={fixture.name}
+            manual={fixture.manual}
+            weight={fixture.weight}
+            wattage={fixture.wattage}
+          />
         )
       })
     }
 
     return(
-      <div onClick={this.toggleFixtures} className="fixture column panel callout small-12">
+      <div onClick={this.toggleFixtures} className="fixture column panel callout small-12nd">
         <p>{this.props.name.toUpperCase()}</p>
         <ul>
           {fixtures}

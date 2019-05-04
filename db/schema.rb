@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_01_012659) do
+ActiveRecord::Schema.define(version: 2019_05_04_213501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2019_05_01_012659) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["manufacturer_id"], name: "index_fixtures_on_manufacturer_id"
+    t.index ["name"], name: "index_fixtures_on_name"
     t.index ["user_id"], name: "index_fixtures_on_user_id"
   end
 
@@ -33,6 +34,7 @@ ActiveRecord::Schema.define(version: 2019_05_01_012659) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_manufacturers_on_name"
   end
 
   create_table "modes", force: :cascade do |t|
