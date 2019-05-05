@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ManufacturerTile from '../components/ManufacturerTile'
+import { Link } from 'react-router';
 
 class FixtureIndexContainer extends Component {
   constructor(props) {
@@ -99,6 +100,14 @@ class FixtureIndexContainer extends Component {
 
     return(
       <div>
+        <div className="fixture-header">
+          <h1>Fixture Library</h1>
+          <p>These fixtures are provided by the Open Lighting Project's Open Fixture Library (OFL)</p>
+          <p>For more information or to contribute, <a href="https://open-fixture-library.org/" target="_blank">visit their website</a>.</p>
+          <h3>
+            Don't see the fixture you need: <Link to={`/fixtures/new`}>Add a Fixture</Link>
+          </h3>
+        </div>
         <div className="button-container row">
           <button className="top-button" onClick={handleOpen}>Expand All</button>
           <button className="top-button" onClick={handleClose}>Collapse All</button>

@@ -1,12 +1,26 @@
+@import 'Colors';
+
 .soon {
   width: 20rem;
   margin: auto;
   text-align: center;
 }
-h1 {
+
+h1, h2, h3 {
   font-family: Verdana, sans-serif;
   font-weight: bold;
+  color: $light-grey;
 }
+
 body {
-  background-color: black;
+  background-color: $dark-grey;
+  color: $light-grey;
+}
+
+a {
+  color: $blue-grey;
+}
+
+a:hover {
+  color: $darkblue-grey;
 }
