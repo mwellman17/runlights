@@ -1,6 +1,14 @@
+@import 'Colors';
+
 .fixture.callout.panel {
-  background-color: #FAC100;
+  background-color: $gold;
   border: 2px solid black;
+}
+
+.fixture-header {
+  display: block;
+  text-align: center;
+  justify-content: center;
 }
 
 .top-button {
@@ -21,20 +29,32 @@
   margin: auto;
 }
 
+.search input[type="text"] {
+  font-size: 16px;
+}
+
+button a {
+  color: black;
+}
+
+button a:hover {
+  color: white;
+}
+
 .button-container {
   display: flex;
   justify-content: center;
 }
 
 .top-button {
-  background-color: #FAC100;
+  background-color: $gold;
   color: black;
   border: 2px solid black;
 }
 
 .top-button:hover,
 .top-button:focus {
-  background-color: #A67C00;
+  background-color: $dark-gold;
 }
 
 .no-results {

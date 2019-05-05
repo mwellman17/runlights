@@ -41,15 +41,25 @@ class FixtureTile extends Component {
       weight = (<li>{Math.round(this.props.weight * 2.20462)} lbs</li>)
     }
     if (this.props.manual) {
-      manual = <li><a href={this.props.manual} target="_blank">Link to Manual</a></li>
+      manual = <li><a href={this.props.manual} target="_blank">Manual</a></li>
     }
 
     let details = (
       <ul className={visibility}>
-        {modeList}
-        {wattage}
-        {weight}
-        {manual}
+        <li>
+          Modes
+          <ul>
+            {modeList}
+          </ul>
+        </li>
+        <li>
+          Details
+          <ul>
+            {wattage}
+            {weight}
+            {manual}
+          </ul>
+        </li>
       </ul>
     )
 
