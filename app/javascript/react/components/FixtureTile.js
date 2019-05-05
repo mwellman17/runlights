@@ -26,6 +26,14 @@ class FixtureTile extends Component {
     let wattage
     let weight
     let manual
+
+    let modes = this.props.modes
+    let modeList = Object.entries(modes).map(mode => {
+      return(
+        <li key={mode[0]}>{mode.join(' - Ch: ')}</li>
+      )
+    })
+
     if (this.props.wattage) {
       wattage = (<li>{this.props.wattage} watts</li>)
     }
@@ -38,6 +46,7 @@ class FixtureTile extends Component {
 
     let details = (
       <ul className={visibility}>
+        {modeList}
         {wattage}
         {weight}
         {manual}

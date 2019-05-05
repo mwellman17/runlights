@@ -7,7 +7,7 @@ class Api::V1::FixturesController < ApplicationController
   end
 
   def search
-    manufacturers = Manufacturer.where("name ILIKE ?", "%#{params['search_string']}%")
+    manufacturers = (Manufacturer.includes(:fixtures).where("fixtures.name ILIKE ?", "%#{params['search_string']}%").references(:fixtures) + Manufacturer.where("name ILIKE ?", "%#{params['search_string']}%")).uniq
     render json: manufacturers
   end
 

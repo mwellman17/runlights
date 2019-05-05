@@ -12,7 +12,7 @@ class FixtureIndexContainer extends Component {
     this.openAll = this.openAll.bind(this)
     this.closeAll = this.closeAll.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleClear = this.handleClear.bind(this)
     this.fetchFixtures = this.fetchFixtures.bind(this)
   }
 
@@ -31,7 +31,7 @@ class FixtureIndexContainer extends Component {
       return response.json();
     })
     .then(body => {
-      this.setState({ manufacturers: body, searchString: "" })
+      this.setState({ manufacturers: body, searchString: "", batch: false })
     })
     .catch(error => console.error(`Error in fetch: ${error.message}`))
   }
@@ -62,11 +62,11 @@ class FixtureIndexContainer extends Component {
     })
     .then(response => response.json())
     .then(body => {
-      this.setState({ manufacturers: body })
+      this.setState({ manufacturers: body, batch: true })
     })
   }
 
-  handleSubmit(event) {
+  handleClear(event) {
     event.preventDefault()
     this.fetchFixtures()
   }
@@ -84,6 +84,12 @@ class FixtureIndexContainer extends Component {
       )
     })
 
+    if (manufacturers.length === 0){
+      manufacturers = (
+        <p className="no-results text-center">Nothing to Show</p>
+      )
+    }
+
     let handleOpen = () => {
       this.openAll()
     }
@@ -93,16 +99,14 @@ class FixtureIndexContainer extends Component {
 
     return(
       <div>
-        <div className="top-button row">
-          <button onClick={handleOpen}>Open All</button>
-          <button onClick={handleClose}>Close All</button>
+        <div className="button-container row">
+          <button className="top-button" onClick={handleOpen}>Expand All</button>
+          <button className="top-button" onClick={handleClose}>Collapse All</button>
+          <button className="top-button" onClick={this.handleClear}>Clear Search</button>
         </div>
-          <div className="search-section">
-            <form className= "" onSubmit={this.handleSubmit}>
-              <input className="" type='text' name='searchString' value={this.state.searchString} onChange={this.handleChange} />
-              <input className="" type='submit' value='Clear' />
-            </form>
-          </div>
+          <form className="search">
+            <input type='text' name='searchString' value={this.state.searchString} onChange={this.handleChange} placeholder="Search"/>
+          </form>
         <div className="row">
           {manufacturers}
         </div>

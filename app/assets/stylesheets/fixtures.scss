@@ -15,3 +15,28 @@
 .visible {
   visibility: visible;
 }
+
+.search {
+  width: 70%;
+  margin: auto;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.top-button {
+  background-color: #FAC100;
+  color: black;
+  border: 2px solid black;
+}
+
+.top-button:hover,
+.top-button:focus {
+  background-color: #A67C00;
+}
+
+.no-results {
+  color: white;
+}
