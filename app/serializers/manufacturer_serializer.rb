@@ -1,7 +1,7 @@
 class ManufacturerSerializer < ActiveModel::Serializer
-  attributes :id, :name, :fixtures
+  attributes :id, :name
 
-  def fixtures
+  has_many :fixtures do
     object.fixtures.order(name: :asc)
   end
 end

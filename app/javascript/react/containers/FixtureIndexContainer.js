@@ -6,13 +6,17 @@ class FixtureIndexContainer extends Component {
     super(props);
     this.state = {
       manufacturers: [],
-      batch: null
+      batch: null,
+      searchString: ""
     }
     this.openAll = this.openAll.bind(this)
     this.closeAll = this.closeAll.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleClear = this.handleClear.bind(this)
+    this.fetchFixtures = this.fetchFixtures.bind(this)
   }
 
-  componentDidMount(){
+  fetchFixtures() {
     fetch('/api/v1/fixtures')
     .then(response => {
       if (response.ok) {
@@ -27,9 +31,13 @@ class FixtureIndexContainer extends Component {
       return response.json();
     })
     .then(body => {
-      this.setState({ manufacturers: body })
+      this.setState({ manufacturers: body, searchString: "", batch: false })
     })
     .catch(error => console.error(`Error in fetch: ${error.message}`))
+  }
+
+  componentDidMount(){
+    this.fetchFixtures()
   }
 
   openAll() {
@@ -38,6 +46,29 @@ class FixtureIndexContainer extends Component {
 
   closeAll() {
     this.setState({ batch: false })
+  }
+
+  handleChange(event) {
+    let newSearchString = event.target.value
+    this.setState({ searchString: newSearchString })
+    const body = JSON.stringify({
+      search_string: newSearchString
+    })
+    fetch('/api/v1/fixtures/search.json', {
+      method: 'POST',
+      body: body,
+      credentials: 'same-origin',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(body => {
+      this.setState({ manufacturers: body, batch: true })
+    })
+  }
+
+  handleClear(event) {
+    event.preventDefault()
+    this.fetchFixtures()
   }
 
   render() {
@@ -53,6 +84,12 @@ class FixtureIndexContainer extends Component {
       )
     })
 
+    if (manufacturers.length === 0){
+      manufacturers = (
+        <p className="no-results text-center">Nothing to Show</p>
+      )
+    }
+
     let handleOpen = () => {
       this.openAll()
     }
@@ -62,13 +99,17 @@ class FixtureIndexContainer extends Component {
 
     return(
       <div>
-      <div className="top-button row">
-        <button onClick={handleOpen}>Open All</button>
-        <button onClick={handleClose}>Close All</button>
-      </div>
-      <div className="row">
-        {manufacturers}
-      </div>
+        <div className="button-container row">
+          <button className="top-button" onClick={handleOpen}>Expand All</button>
+          <button className="top-button" onClick={handleClose}>Collapse All</button>
+          <button className="top-button" onClick={this.handleClear}>Clear Search</button>
+        </div>
+          <form className="search">
+            <input type='text' name='searchString' value={this.state.searchString} onChange={this.handleChange} placeholder="Search"/>
+          </form>
+        <div className="row">
+          {manufacturers}
+        </div>
       </div>
     )
   }
