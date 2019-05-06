@@ -5,4 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :fixtures
+
+  validates :username, presence: true, uniqueness: true
 end
