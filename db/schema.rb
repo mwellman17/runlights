@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2019_05_04_213501) do
 
   create_table "fixtures", force: :cascade do |t|
     t.string "name", null: false
-    t.string "short_name"
+    t.string "short_name", null: false
     t.text "manual"
     t.float "weight"
     t.integer "wattage"
@@ -38,8 +38,8 @@ ActiveRecord::Schema.define(version: 2019_05_04_213501) do
   end
 
   create_table "modes", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "short_name"
+    t.string "name", default: "default", null: false
+    t.string "short_name", default: "default", null: false
     t.integer "footprint", default: 1, null: false
     t.bigint "fixture_id"
     t.datetime "created_at", null: false

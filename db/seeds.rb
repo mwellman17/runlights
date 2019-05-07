@@ -33,7 +33,11 @@ Dir.foreach('./fixtures') do |directory|
     next if json == '.' or json == '..'
     file = JSON.parse(File.read "./fixtures/#{directory}/#{json}")
     name = file['name']
-    short_name = file['shortName']
+    if !file['shortName']
+      short_name = name.gsub(' ','')
+    else
+      short_name = file['shortName']
+    end
     manual = nil
     if file['links']
       if file['links']['manual']
@@ -58,7 +62,11 @@ Dir.foreach('./fixtures') do |directory|
     if file['modes']
       file['modes'].each do |mode|
         mode_name = mode['name']
-        mode_short_name = mode['short_name']
+        if !mode['short_name']
+          mode_short_name = mode_name.gsub(' ','')
+        else
+          mode_short_name = mode['short_name']
+        end
         Mode.create!({
           name: mode_name,
           short_name: mode_short_name,
