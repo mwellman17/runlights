@@ -1,5 +1,5 @@
 class Mode < ApplicationRecord
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true
   attribute :name, :string, default: "default"
   validates :short_name, presence: true
   attribute :short_name, :string, default: "default"
