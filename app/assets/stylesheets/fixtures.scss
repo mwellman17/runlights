@@ -29,10 +29,6 @@
   margin: auto;
 }
 
-.search input[type="text"] {
-  font-size: 16px;
-}
-
 button a {
   color: black;
 }
@@ -59,4 +55,49 @@ button a:hover {
 
 .no-results {
   color: white;
+}
+
+.form {
+  margin: auto;
+  width: 80%;
+}
+.form label {
+  color: $light-grey;
+}
+
+.search input[type="text"],
+.form input[type="text"],
+.form input[type="number"] {
+  font-size: 16px;
+}
+
+.delete-mode {
+  padding-top: 25px;
+  color: darkred;
+}
+
+.delete-mode:hover,
+.delete-mode:focus {
+  color: red;
+}
+
+.new-fixture-button {
+  text-align: center;
+}
+
+.new-fixture-button button {
+  background-color: $gold;
+  color: black;
+  border-radius: 7px;
+  width: 20rem;
+}
+
+.new-fixture-button button:hover,
+.new-fixture-button button:focus {
+  background-color: $dark-gold;
+}
+
+.success,
+.error {
+  text-align: center;
 }
