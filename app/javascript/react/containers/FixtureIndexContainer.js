@@ -21,6 +21,7 @@ class FixtureIndexContainer extends Component {
     this.fetchFixtures = this.fetchFixtures.bind(this)
     this.toggleFixtureForm = this.toggleFixtureForm.bind(this)
     this.passFixture = this.passFixture.bind(this)
+    this.handleFavorite = this.handleFavorite.bind(this)
   }
 
   fetchFixtures() {
@@ -93,16 +94,44 @@ class FixtureIndexContainer extends Component {
     this.setState({ userFixtures: userFixtures })
   }
 
+  handleFavorite(fixtureId){
+    const body = JSON.stringify({
+      fixture_id: fixtureId,
+      user_id: this.state.user
+    })
+    fetch(`/api/v1/fixtures/${fixtureId}/favorites`, {
+    method: "POST",
+    body: body,
+    credentials: 'same-origin',
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            let errorMessage = `${response.status} (${response.statusText})`,
+            error = new Error(errorMessage);
+            throw(error);
+        }
+    })
+    .then(response => response.json())
+    .then(body => {
+      
+    })
+    .catch(error => console.error(`Error in fetch: ${error.message}`));
+  }
+
   render() {
 
     let userFixtures
-    if (this.state.userFixtures) {
+    if (this.state.userFixtures && this.state.userFixtures.length > 0) {
       userFixtures = (
         <ManufacturerTile
           key="user"
           name="User Fixtures"
           fixtures={this.state.userFixtures}
           batch={this.state.batch}
+          handleFavorite={this.handleFavorite}
         />
       )
     }
@@ -114,6 +143,7 @@ class FixtureIndexContainer extends Component {
           name={manufacturer.name}
           fixtures={manufacturer.fixtures}
           batch={this.state.batch}
+          handleFavorite={this.handleFavorite}
         />
       )
     })

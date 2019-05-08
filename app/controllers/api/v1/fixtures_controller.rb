@@ -1,6 +1,4 @@
 class Api::V1::FixturesController < ApplicationController
-  serialization_scope :current_user
-  protect_from_forgery unless: -> { request.format.json? }
 
   def user_id
     if current_user.nil?
@@ -35,7 +33,7 @@ class Api::V1::FixturesController < ApplicationController
       name: response['name'],
       short_name: response['name'].gsub(' ', ''),
       wattage: response['wattage'],
-      weight: response['weight'],
+      weight: response['weight'].to_i * 0.453592,
       manual: response['manual'],
       user: user_id
     }

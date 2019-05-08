@@ -23,6 +23,11 @@ class ManufacturerTile extends Component {
     let fixtures
     if (this.state.showFixtures){
       fixtures = this.props.fixtures.map(fixture => {
+
+        let handleFavorite = () => {
+          this.props.handleFavorite(fixture.id)
+        }
+
         return(
           <FixtureTile
             key={fixture.id}
@@ -31,6 +36,8 @@ class ManufacturerTile extends Component {
             weight={fixture.weight}
             wattage={fixture.wattage}
             modes={fixture.mode_list}
+            favorite={fixture.favorite}
+            handleFavorite={handleFavorite}
           />
         )
       })

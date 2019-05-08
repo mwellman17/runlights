@@ -42,15 +42,16 @@ button a:hover {
   justify-content: center;
 }
 
-.top-button {
+.top-button,
+.top-button:focus {
   background-color: $gold;
   color: black;
   border: 2px solid black;
 }
 
-.top-button:hover,
-.top-button:focus {
+.top-button:hover {
   background-color: $dark-gold;
+  color: white;
 }
 
 .no-results {
@@ -85,19 +86,28 @@ button a:hover {
   text-align: center;
 }
 
-.new-fixture-button button {
+.new-fixture-button button,
+.new-fixture-button button:focus {
   background-color: $gold;
   color: black;
   border-radius: 7px;
   width: 20rem;
 }
 
-.new-fixture-button button:hover,
-.new-fixture-button button:focus {
+.new-fixture-button button:hover {
   background-color: $dark-gold;
+  color: white;
 }
 
 .success,
 .error {
   text-align: center;
+}
+
+.favorite {
+  color: red;
+}
+
+.not-favorite {
+  color: black;
 }

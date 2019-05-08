@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_04_213501) do
+ActiveRecord::Schema.define(version: 2019_05_08_142441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "fixture_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fixture_id"], name: "index_favorites_on_fixture_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
 
   create_table "fixtures", force: :cascade do |t|
     t.string "name", null: false
