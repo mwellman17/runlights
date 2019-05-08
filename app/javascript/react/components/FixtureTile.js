@@ -72,14 +72,17 @@ class FixtureTile extends Component {
     )
 
     let favorite
-    if (this.state.favorite) {
-      favorite = (
-        <i onClick={this.toggleFavorite} className="fas fa-heart favorite"></i>
-      )
-    } else
-      favorite = (
-        <i onClick={this.toggleFavorite} className="far fa-heart not-favorite"></i>
-      )
+    if (this.props.user) {
+      if (this.state.favorite) {
+        favorite = (
+          <i onClick={this.toggleFavorite} className="fas fa-heart favorite"></i>
+        )
+      } else {
+        favorite = (
+          <i onClick={this.toggleFavorite} className="far fa-heart not-favorite"></i>
+        )
+      }
+    }
 
     return(
       <li onClick={this.setVisibility}>

@@ -1,4 +1,6 @@
 class Api::V1::FixturesController < ApplicationController
+before_action :authenticate_user!, except: [:index, :search]
+serialization_scope :current_user
 
   def user_id
     if current_user.nil?
@@ -13,12 +15,14 @@ class Api::V1::FixturesController < ApplicationController
     user_fixtures = nil
     if current_user
       user_fixtures = User.find(user_id).fixtures
+      render json: {
+        manufacturers: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, each_serializer: ManufacturerSerializer, current_user: current_user),
+        user_fixtures: ActiveModel::Serializer::CollectionSerializer.new(user_fixtures, each_serializer: FixtureSerializer, current_user: current_user),
+        user_id: user_id
+      }
+    else
+      render json: Manufacturer.all.order(name: :asc)
     end
-    render json: {
-      manufacturers: ActiveModel::SerializableResource.new(manufacturers),
-      user_fixtures: ActiveModel::SerializableResource.new(user_fixtures),
-      user_id: user_id
-    }
   end
 
   def search

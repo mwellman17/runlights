@@ -38,6 +38,7 @@ class ManufacturerTile extends Component {
             modes={fixture.mode_list}
             favorite={fixture.favorite}
             handleFavorite={handleFavorite}
+            user={this.props.user}
           />
         )
       })

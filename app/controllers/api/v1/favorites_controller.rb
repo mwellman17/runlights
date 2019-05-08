@@ -1,4 +1,5 @@
 class Api::V1::FavoritesController < ApplicationController
+  before_action :authenticate_user!, except: []
 
   def create
     response = JSON.parse(request.body.read)
