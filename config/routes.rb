@@ -6,7 +6,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :fixtures, only: [:index, :create]
+      resources :fixtures, only: [:index, :create] do
+        resources :favorites, only: [:create]
+      end
       post 'fixtures/search', to: 'fixtures#search'
     end
   end

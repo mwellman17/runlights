@@ -15,7 +15,7 @@ const ModeTile = props => {
         placeholder="default"
         />
       </div>
-      <div className="columns small-5">
+      <div className="columns small-4">
         <label htmlFor={props.footprint}>{props.footprintLabel}</label>
         <input
         onChange={props.footprintChange}
@@ -26,7 +26,7 @@ const ModeTile = props => {
         placeholder="1"
         />
       </div>
-      <div className="delete-mode columns small-1">
+      <div className="delete-mode columns small-2">
         <i onClick={props.handleDelete} className="fas fa-minus-square"></i>
       </div>
 		</div>

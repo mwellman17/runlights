@@ -4,14 +4,22 @@ class FixtureTile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showDetails: false
+      showDetails: false,
+      favorite: this.props.favorite
     }
     this.setVisibility = this.setVisibility.bind(this)
+    this.toggleFavorite = this.toggleFavorite.bind(this)
   }
 
   setVisibility(event) {
     event.stopPropagation()
     this.setState({ showDetails: !this.state.showDetails })
+  }
+
+  toggleFavorite(event){
+    event.stopPropagation()
+    this.setState({ favorite: !this.state.favorite })
+    this.props.handleFavorite()
   }
 
   render() {
@@ -63,9 +71,19 @@ class FixtureTile extends Component {
       </ul>
     )
 
+    let favorite
+    if (this.state.favorite) {
+      favorite = (
+        <i onClick={this.toggleFavorite} className="fas fa-heart favorite"></i>
+      )
+    } else
+      favorite = (
+        <i onClick={this.toggleFavorite} className="far fa-heart not-favorite"></i>
+      )
+
     return(
       <li onClick={this.setVisibility}>
-        {this.props.name} {showIcon}
+        {this.props.name} {showIcon} {favorite}
         {details}
       </li>
     )

@@ -143,7 +143,7 @@ class NewFixtureForm extends Component {
         <ModeTile
           key={index}
           nameLabel={`Mode ${index + 1} Name`}
-          footprintLabel={`Mode ${index + 1} Footprint`}
+          footprintLabel="Footprint"
           name="name"
           footprint="footprint"
           nameValue={mode.name}
@@ -163,7 +163,7 @@ class NewFixtureForm extends Component {
           <FormTile
           key="wattage"
           name="wattage"
-          label="Wattage"
+          label="Power (watts)"
           value={this.state.wattage}
           type="number"
           handleChange={this.handleChange}
@@ -171,7 +171,7 @@ class NewFixtureForm extends Component {
           <FormTile
           key="weight"
           name="weight"
-          label="Weight"
+          label="Weight (lbs)"
           value={this.state.weight}
           type="number"
           handleChange={this.handleChange}
