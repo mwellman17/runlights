@@ -12,7 +12,7 @@ class FixtureIndexContainer extends Component {
       searchString: "",
       showFixtureForm: false,
       user: null,
-      userFixtures: []
+      userFixtures: null
     }
     this.openAll = this.openAll.bind(this)
     this.closeAll = this.closeAll.bind(this)
@@ -96,7 +96,7 @@ class FixtureIndexContainer extends Component {
   render() {
 
     let userFixtures
-    if (this.state.userFixtures.length > 0) {
+    if (this.state.userFixtures) {
       userFixtures = (
         <ManufacturerTile
           key="user"
