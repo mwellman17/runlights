@@ -22,10 +22,11 @@ class FixtureIndexContainer extends Component {
     this.toggleFixtureForm = this.toggleFixtureForm.bind(this)
     this.passFixture = this.passFixture.bind(this)
     this.handleFavorite = this.handleFavorite.bind(this)
+    this.searchFetch = this.searchFetch.bind(this)
   }
 
   fetchFixtures() {
-    fetch('/api/v1/fixtures')
+    fetch('/api/v1/fixtures', { credentials: 'same-origin' })
     .then(response => {
       if (response.ok) {
         return response;
@@ -39,11 +40,15 @@ class FixtureIndexContainer extends Component {
       return response.json();
     })
     .then(body => {
+      let current_user = ""
+      if (body.user_id) {
+        current_user = body.user_id
+      }
       this.setState({
         manufacturers: body.manufacturers,
         searchString: "",
         batch: false,
-        user: body.user_id,
+        user: current_user,
         userFixtures: body.user_fixtures
       })
     })
@@ -62,22 +67,42 @@ class FixtureIndexContainer extends Component {
     this.setState({ batch: false })
   }
 
+  componentWillMount() {
+    this.timer = null;
+  }
+
   handleChange(event) {
+    clearTimeout(this.timer);
     let newSearchString = event.target.value
     this.setState({ searchString: newSearchString })
-    const body = JSON.stringify({
-      search_string: newSearchString
-    })
-    fetch('/api/v1/fixtures/search.json', {
-      method: 'POST',
-      body: body,
-      credentials: 'same-origin',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-    })
-    .then(response => response.json())
-    .then(body => {
-      this.setState({ manufacturers: body, batch: true })
-    })
+
+    this.timer = setTimeout(
+      function() {
+        this.searchFetch(newSearchString)
+      }
+      .bind(this),
+      1000
+    );
+  }
+
+  searchFetch(searchString) {
+    if (searchString == ""){
+      this.fetchFixtures()
+    } else {
+      const body = JSON.stringify({
+        search_string: searchString
+      })
+      fetch('/api/v1/fixtures/search.json', {
+        method: 'POST',
+        body: body,
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(body => {
+        this.setState({ manufacturers: body, batch: true })
+      })
+    }
   }
 
   handleClear(event) {
@@ -116,7 +141,7 @@ class FixtureIndexContainer extends Component {
     })
     .then(response => response.json())
     .then(body => {
-      
+
     })
     .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
@@ -132,6 +157,7 @@ class FixtureIndexContainer extends Component {
           fixtures={this.state.userFixtures}
           batch={this.state.batch}
           handleFavorite={this.handleFavorite}
+          user={this.state.user}
         />
       )
     }
@@ -144,13 +170,14 @@ class FixtureIndexContainer extends Component {
           fixtures={manufacturer.fixtures}
           batch={this.state.batch}
           handleFavorite={this.handleFavorite}
+          user={this.state.user}
         />
       )
     })
 
     if (manufacturers.length === 0){
       manufacturers = (
-        <p className="no-results text-center">Nothing to Show</p>
+        <p className="text-center">Nothing to Show</p>
       )
     }
 
