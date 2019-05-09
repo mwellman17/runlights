@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :fixtures, only: [:index, :create] do
         resources :favorites, only: [:create]
       end
+      get 'current_user', to: 'users#index'
       post 'fixtures/search', to: 'fixtures#search'
     end
   end
