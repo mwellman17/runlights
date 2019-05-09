@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import RunLights from 'images/runlights.png'
 
 class DashboardContainer extends Component {
   constructor(props) {
@@ -23,7 +22,7 @@ class DashboardContainer extends Component {
     return(
       <div>
         <div className="soon">
-          <img src={RunLights} />
+          <img src="/images/runlights.png" />
           <h1>SOON</h1>
         </div>
       </div>
