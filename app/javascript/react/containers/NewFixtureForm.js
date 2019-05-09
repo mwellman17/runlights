@@ -96,7 +96,7 @@ class NewFixtureForm extends Component {
       if(body.error){
         this.setState({ errors: body.error })
       } else {
-        this.passFixture(body)
+        this.passFixture(body.fixture)
         this.setState({
           name: "",
           modes: [
@@ -193,7 +193,6 @@ class NewFixtureForm extends Component {
       <div>
         <hr/>
         <h2 className="text-center">New Fixture</h2>
-        {success}
         <form className="form">
           <FormTile
             key="name"
@@ -214,6 +213,7 @@ class NewFixtureForm extends Component {
           <div className="new-fixture-button">
             <button onClick={this.handleSubmit} type="submit" name="submit" id="submit">Submit</button>
           </div>
+          {success}
           {errors}
         </form>
         <hr/>

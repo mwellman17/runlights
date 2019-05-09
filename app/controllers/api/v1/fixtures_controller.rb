@@ -1,6 +1,6 @@
 class Api::V1::FixturesController < ApplicationController
-  protect_from_forgery unless: -> { request.format.json? }
   before_action :authenticate_user!, except: [:index, :search]
+  protect_from_forgery unless: -> { request.format.json? }
   serialization_scope :current_user
 
   def user_id
@@ -28,7 +28,7 @@ class Api::V1::FixturesController < ApplicationController
 
   def search
     manufacturers = (Manufacturer.includes(:fixtures).where("fixtures.name ILIKE ?", "%#{params['search_string']}%").references(:fixtures) + Manufacturer.where("name ILIKE ?", "%#{params['search_string']}%")).uniq
-    render json: manufacturers
+    render json: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, each_serializer: ManufacturerSerializer, current_user: current_user)
   end
 
   def create
@@ -44,6 +44,7 @@ class Api::V1::FixturesController < ApplicationController
     }
     fixture = Fixture.new(fixture_attributes)
     if fixture.save
+      Favorite.create({ user: fixture.user, fixture: fixture })
       if response['modes'].length == 0
         mode_attributes = {
           name: "default",

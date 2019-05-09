@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :fixtures
   has_many :favorites
+  has_many :shows
 
   validates :username, presence: true, uniqueness: true
 end
