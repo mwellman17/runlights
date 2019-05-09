@@ -100,7 +100,7 @@ class FixtureIndexContainer extends Component {
       })
       .then(response => response.json())
       .then(body => {
-        this.setState({ manufacturers: body, batch: true })
+        this.setState({ manufacturers: body.manufacturers, batch: true })
       })
     }
   }
