@@ -2,21 +2,17 @@ import React, { Component } from 'react'
 import FixtureTile from './FixtureTile'
 import { Link } from 'react-router';
 
-class ManufacturerTile extends Component {
+class FavoritesTile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showFixtures: false
+      showFixtures: true
     }
     this.toggleFixtures = this.toggleFixtures.bind(this)
   }
 
   toggleFixtures(){
     this.setState({ showFixtures: !this.state.showFixtures })
-  }
-
-  componentWillReceiveProps(props) {
-    this.setState({ showFixtures: props.batch })
   }
 
   render() {
@@ -46,14 +42,17 @@ class ManufacturerTile extends Component {
     }
 
     return(
-      <div onClick={this.toggleFixtures} className="fixture column panel callout small-12">
-        <p>{this.props.name.toUpperCase()}</p>
+      <div>
+        <Link to='/fixtures'>Add a Fixture</Link>
+        <div onClick={this.toggleFixtures} className="fixture column panel callout small-12">
+        <p>FAVORITES</p>
         <ul>
-          {fixtures}
+        {fixtures}
         </ul>
+        </div>
       </div>
     )
   }
 }
 
-export default ManufacturerTile;
+export default FavoritesTile;

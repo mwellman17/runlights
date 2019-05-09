@@ -14,8 +14,9 @@ class Api::V1::FavoritesController < ApplicationController
         render json: { error: favorite.errors.full_messages.join(', ') }
       end
     else
+      id = old_favorite[0].fixture_id
       old_favorite.destroy_all
-      render json: old_favorite[0]
+      render json: { id: id }
     end
   end
 end

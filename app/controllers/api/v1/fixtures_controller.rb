@@ -1,6 +1,7 @@
 class Api::V1::FixturesController < ApplicationController
-before_action :authenticate_user!, except: [:index, :search]
-serialization_scope :current_user
+  protect_from_forgery unless: -> { request.format.json? }
+  before_action :authenticate_user!, except: [:index, :search]
+  serialization_scope :current_user
 
   def user_id
     if current_user.nil?
