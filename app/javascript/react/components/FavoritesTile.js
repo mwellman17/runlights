@@ -17,6 +17,13 @@ class FavoritesTile extends Component {
 
   render() {
 
+    let addButton
+    if (this.props.showForm) {
+      addButton = "add-right add-button fas fa-minus"
+    } else {
+      addButton = "add-right add-button fas fa-plus"
+    }
+
     let fixtures
     if (this.state.showFixtures){
       fixtures = this.props.fixtures.map(fixture => {
@@ -43,12 +50,15 @@ class FavoritesTile extends Component {
 
     return(
       <div>
-        <Link to='/fixtures'>Add a Fixture</Link>
         <div onClick={this.toggleFixtures} className="fixture column panel callout small-12">
-        <p>FAVORITES</p>
+        <p>
+          FAVORITES
+          <i onClick={this.props.newShow} className={addButton}></i>
+        </p>
         <ul>
-        {fixtures}
+          {fixtures}
         </ul>
+        <p><Link className="add-right" to='/fixtures'>Fixture Library</Link></p>
         </div>
       </div>
     )

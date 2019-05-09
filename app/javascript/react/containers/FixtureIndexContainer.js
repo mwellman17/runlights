@@ -101,7 +101,7 @@ class FixtureIndexContainer extends Component {
       })
       .then(response => response.json())
       .then(body => {
-        this.setState({ manufacturers: body.manufacturers, batch: true })
+        this.setState({ manufacturers: body, batch: true })
       })
     }
   }
@@ -116,6 +116,7 @@ class FixtureIndexContainer extends Component {
   }
 
   passFixture(fixture) {
+    fixture.favorite = true
     let userFixtures = this.state.userFixtures.concat(fixture)
     this.setState({ userFixtures: userFixtures })
   }
@@ -132,13 +133,13 @@ class FixtureIndexContainer extends Component {
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
     })
     .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            let errorMessage = `${response.status} (${response.statusText})`,
-            error = new Error(errorMessage);
-            throw(error);
-        }
+      if (response.ok) {
+          return response;
+      } else {
+          let errorMessage = `${response.status} (${response.statusText})`,
+          error = new Error(errorMessage);
+          throw(error);
+      }
     })
     .then(response => response.json())
     .then(body => {

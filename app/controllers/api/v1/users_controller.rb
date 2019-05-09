@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-  protect_from_forgery unless: -> { request.format.json? }
   before_action :authenticate_user!, except: [:index]
+  protect_from_forgery unless: -> { request.format.json? }
   serialization_scope :current_user
 
   def index
@@ -15,7 +15,8 @@ class Api::V1::UsersController < ApplicationController
         user: {
           user_id: current_user.id,
           username: current_user.username,
-          favorites: ActiveModel::Serializer::CollectionSerializer.new(fixtures, each_serializer: FixtureSerializer, current_user: current_user)
+          favorites: ActiveModel::Serializer::CollectionSerializer.new(fixtures, each_serializer: FixtureSerializer, current_user: current_user),
+          shows: ActiveModel::Serializer::CollectionSerializer.new(current_user.shows, each_serializer: ShowSerializer)
         }
       }
     end
