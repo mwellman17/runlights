@@ -55,11 +55,13 @@ class NewInstrumentForm extends Component {
     let fixtureTree = this.props.fixtures.map(fixture => {
       let modesTree = fixture.modes.map(mode => {
         return(
-          <option value={mode.name} key={mode.id}>{` - ${mode.name}`}</option>
+          <option value={mode.name} key={mode.id}>{`${fixture.name} ${mode.name}`}</option>
         )
       })
       return(
-        <option value={fixture.name} key={fixture.id}>{fixture.name}</option>
+        <optgroup value={fixture.name} key={fixture.id} label={fixture.name} >
+          {modesTree}
+        </optgroup>
       )
     })
 
@@ -70,6 +72,7 @@ class NewInstrumentForm extends Component {
         <form className="form">
         <label htmlFor="fixtures">Select a Fixture:</label>
           <select id="fixtures">
+            <option value="" />
             {fixtureTree}
           </select>
           <div>
