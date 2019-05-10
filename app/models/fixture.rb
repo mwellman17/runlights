@@ -5,6 +5,7 @@ class Fixture < ApplicationRecord
   belongs_to :user
   has_many :modes
   has_many :favorites
+  has_many :instruments
 
   def mode_list
     display = {}

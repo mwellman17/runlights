@@ -3,10 +3,11 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :fixtures, only: [:index, :new]
+  resources :shows, only: [:show]
 
   namespace :api do
     namespace :v1 do
-      resources :shows, only: [:create]
+      resources :shows, only: [:show, :create]
       resources :fixtures, only: [:index, :create] do
         resources :favorites, only: [:create]
       end
