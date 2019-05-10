@@ -7,4 +7,5 @@ class Mode < ApplicationRecord
   attribute :footprint, :integer, default: 1
 
   belongs_to :fixture
+  has_many :instruments
 end

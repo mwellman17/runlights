@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_09_174347) do
+ActiveRecord::Schema.define(version: 2019_05_10_145945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,27 @@ ActiveRecord::Schema.define(version: 2019_05_09_174347) do
     t.index ["user_id"], name: "index_fixtures_on_user_id"
   end
 
+  create_table "instruments", force: :cascade do |t|
+    t.bigint "fixture_id", null: false
+    t.bigint "mode_id", null: false
+    t.bigint "show_id", null: false
+    t.string "purpose"
+    t.integer "channel"
+    t.integer "address"
+    t.string "circuit"
+    t.string "accessory"
+    t.string "color"
+    t.string "gobo"
+    t.bigint "position_id"
+    t.float "unit_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fixture_id"], name: "index_instruments_on_fixture_id"
+    t.index ["mode_id"], name: "index_instruments_on_mode_id"
+    t.index ["position_id"], name: "index_instruments_on_position_id"
+    t.index ["show_id"], name: "index_instruments_on_show_id"
+  end
+
   create_table "manufacturers", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -54,6 +75,14 @@ ActiveRecord::Schema.define(version: 2019_05_09_174347) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fixture_id"], name: "index_modes_on_fixture_id"
+  end
+
+  create_table "positions", force: :cascade do |t|
+    t.bigint "show_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["show_id"], name: "index_positions_on_show_id"
   end
 
   create_table "shows", force: :cascade do |t|

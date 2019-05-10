@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router';
 
 class ShowsTile extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class ShowsTile extends Component {
     if (this.state.showShows){
       shows = this.props.shows.map(show => {
         return(
-          <li key={show.id}>{show.name}</li>
+          <li key={show.id}><Link to={`/shows/${show.id}`}>{show.name}</Link></li>
         )
       })
     }
