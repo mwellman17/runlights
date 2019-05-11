@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ManufacturerTile from '../components/ManufacturerTile'
 import { Link } from 'react-router';
-import NewFixtureForm from './NewFixtureForm'
+import NewFixtureForm from '../components/NewFixtureForm'
 import BackButton from '../components/BackButton'
 
 class FixtureIndexContainer extends Component {

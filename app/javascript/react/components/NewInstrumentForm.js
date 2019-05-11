@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import FormTile from './FormTile'
-
-const FORMFIELDS = [["quantity", "Quantity", "number"], ["purpose", "Purpose", "text"], ["channel", "Channel", "number"], ["address", "Address", "number"], ["circuit", "Circuit", "text"], ["accessory", "Accessory", "text"], ["color", "Color", "text"], ["gobo", "Gobo", "text"], ["unitNumber", "Unit Number", "number"]]
+import TextForm from './TextForm'
+import NumberForm from './NumberForm'
+import FORMFIELDS from '../constants/Formfields'
 
 class NewInstrumentForm extends Component {
   constructor(props) {
@@ -22,34 +22,36 @@ class NewInstrumentForm extends Component {
       unitNumber: ""
     }
     this.handleChange = this.handleChange.bind(this)
-    this.handleFixtureChange = this.handleFixtureChange.bind(this)
   }
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleFixtureChange(event) {
-    // this.setState({
-    //   fixture: event.fixtureId,
-    //   mode: event.modeId,
-    //   fixtureValue: event.value
-    //  })
-  }
-
   render() {
 
     let formFields = FORMFIELDS.map(field => {
-      return(
-        <FormTile
-          key={field[0]}
-          name={field[0]}
-          label={field[1]}
-          value={this.state[field[0]]}
-          type={field[2]}
-          handleChange={this.handleChange}
+      if (field.number){
+        return(
+          <NumberForm
+            key={field.name}
+            name={field.name}
+            label={field.label}
+            value={this.state[field.name]}
+            handleChange={this.handleChange}
         />
-      )
+        )
+      } else {
+        return(
+          <TextForm
+          key={field.name}
+          name={field.name}
+          label={field.label}
+          value={this.state[field.name]}
+          handleChange={this.handleChange}
+          />
+        )
+      }
     })
 
     let fixtureTree = this.props.fixtures.map(fixture => {
@@ -71,7 +73,7 @@ class NewInstrumentForm extends Component {
         <h2 className="text-center">Add Instruments</h2>
         <form className="form">
         <label htmlFor="fixtures">Select a Fixture:</label>
-          <select id="fixtures">
+          <select className="fixture-menu" id="fixtures">
             <option value="" />
             {fixtureTree}
           </select>
