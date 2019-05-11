@@ -8,8 +8,6 @@ const FormTile = props => {
       <input
         onChange={props.handleChange}
         type="tel"
-        inputMode="numeric"
-        pattern="[0-9]*"
         name={props.name}
         id={props.name}
         value={props.value} />

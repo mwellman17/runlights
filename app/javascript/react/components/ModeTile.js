@@ -20,8 +20,6 @@ const ModeTile = props => {
         <input
         onChange={props.footprintChange}
         type="tel"
-        inputMode="numeric"
-        pattern="[0-9]*"
         name={props.footprint}
         id={props.footprint}
         value={props.footprintValue}
