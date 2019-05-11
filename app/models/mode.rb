@@ -3,7 +3,7 @@ class Mode < ApplicationRecord
   attribute :name, :string, default: "default"
   validates :short_name, presence: true
   attribute :short_name, :string, default: "default"
-  validates :footprint, presence: true
+  validates :footprint, presence: true, numericality: { only_integer: true, greater_than: 0 }
   attribute :footprint, :integer, default: 1
 
   belongs_to :fixture

@@ -19,7 +19,7 @@ const ModeTile = props => {
         <label htmlFor={props.footprint}>{props.footprintLabel}</label>
         <input
         onChange={props.footprintChange}
-        type="text"
+        type="tel"
         inputMode="numeric"
         pattern="[0-9]*"
         name={props.footprint}

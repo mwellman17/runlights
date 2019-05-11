@@ -7,10 +7,9 @@ class NewInstrumentForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fixtureValue: "Select a Fixture",
+      showId: this.props.show,
       quantity: 1,
-      fixture: "",
-      mode: "",
+      fixtureMode: "",
       purpose: "",
       channel: "",
       address: "",
@@ -22,13 +21,27 @@ class NewInstrumentForm extends Component {
       unitNumber: ""
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  handleSubmit(event) {
+    event.preventDefault()
+    let formPayload = JSON.stringify(this.state)
+    this.props.handleForm(formPayload)
+  }
+
   render() {
+
+    let error
+    if (this.props.error) {
+      error = (
+        <p>{this.props.error}</p>
+      )
+    }
 
     let formFields = FORMFIELDS.map(field => {
       if (field.number){
@@ -57,7 +70,7 @@ class NewInstrumentForm extends Component {
     let fixtureTree = this.props.fixtures.map(fixture => {
       let modesTree = fixture.modes.map(mode => {
         return(
-          <option value={mode.name} key={mode.id}>{`${fixture.name} ${mode.name}`}</option>
+          <option value={mode.id} key={mode.id}>{`${fixture.name} ${mode.name} (${mode.footprint}ch)`}</option>
         )
       })
       return(
@@ -69,17 +82,20 @@ class NewInstrumentForm extends Component {
 
     return(
       <div>
-        <hr />
         <h2 className="text-center">Add Instruments</h2>
         <form className="form">
         <label htmlFor="fixtures">Select a Fixture:</label>
-          <select className="fixture-menu" id="fixtures">
+          <select onChange={this.handleChange} name="fixtureMode" className="fixture-menu" id="fixtures">
             <option value="" />
             {fixtureTree}
           </select>
           <div>
             {formFields}
           </div>
+          <div className="new-fixture-button">
+            <button onClick={this.handleSubmit} type="submit" name="submit" id="submit">Submit</button>
+          </div>
+          {error}
         </form>
         <hr/>
       </div>
