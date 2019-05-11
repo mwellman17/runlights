@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root 'homes#index'
   devise_for :users
 
-  resources :fixtures, only: [:index, :new]
+  resources :fixtures, only: [:index]
   resources :shows, only: [:show]
 
   namespace :api do

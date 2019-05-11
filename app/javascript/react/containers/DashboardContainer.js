@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import FavoritesTile from '../components/FavoritesTile'
 import ShowsTile from '../components/ShowsTile'
 import NewShowTile from '../components/NewShowTile'
-import NewFixtureForm from './NewFixtureForm'
+import NewFixtureForm from '../components/NewFixtureForm'
 
 class DashboardContainer extends Component {
   constructor(props) {

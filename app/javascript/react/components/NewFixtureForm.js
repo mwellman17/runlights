@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import FormTile from '../components/FormTile'
-import ModeTile from '../components/ModeTile'
+import TextForm from './TextForm'
+import NumberForm from './NumberForm'
+import ModeTile from './ModeTile'
 
 class NewFixtureForm extends Component {
   constructor(props) {
@@ -160,28 +161,25 @@ class NewFixtureForm extends Component {
     if (this.state.showDetails) {
       details = (
         <div>
-          <FormTile
+          <NumberForm
           key="wattage"
           name="wattage"
           label="Power (watts)"
           value={this.state.wattage}
-          type="number"
           handleChange={this.handleChange}
           />
-          <FormTile
+          <NumberForm
           key="weight"
           name="weight"
           label="Weight (lbs)"
           value={this.state.weight}
-          type="number"
           handleChange={this.handleChange}
           />
-          <FormTile
+          <TextForm
           key="manual"
           name="manual"
           label="Manual"
           value={this.state.manual}
-          type="text"
           handleChange={this.handleChange}
           />
         </div>
@@ -194,12 +192,11 @@ class NewFixtureForm extends Component {
         <hr/>
         <h2 className="text-center">New Fixture</h2>
         <form className="form">
-          <FormTile
+          <TextForm
             key="name"
             name="name"
             label="Fixture Name"
             value={this.state.name}
-            type="text"
             handleChange={this.handleChange}
           />
           {modes}
