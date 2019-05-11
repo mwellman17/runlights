@@ -3,8 +3,8 @@ class Fixture < ApplicationRecord
 
   belongs_to :manufacturer, optional: true
   belongs_to :user
-  has_many :modes
-  has_many :favorites
+  has_many :modes, :dependent => :delete_all
+  has_many :favorites, :dependent => :delete_all
   has_many :instruments
 
   def mode_list

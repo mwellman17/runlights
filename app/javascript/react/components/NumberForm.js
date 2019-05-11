@@ -7,7 +7,7 @@ const FormTile = props => {
       <label htmlFor={props.name}>{props.label}</label>
       <input
         onChange={props.handleChange}
-        type="text"
+        type="tel"
         inputMode="numeric"
         pattern="[0-9]*"
         name={props.name}

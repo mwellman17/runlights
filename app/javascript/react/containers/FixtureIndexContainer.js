@@ -202,7 +202,7 @@ class FixtureIndexContainer extends Component {
       )
     }
     let newFixtureFormButton = (
-      <h3><a>Authenticating...</a></h3>
+      <h3><a>Loading...</a></h3>
     )
     if (this.state.user === ""){
       newFixtureFormButton = (
