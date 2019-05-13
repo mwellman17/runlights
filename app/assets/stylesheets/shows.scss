@@ -1,3 +1,21 @@
+@import 'Colors';
+
 .fixture-menu {
   font-size: 16px;
+}
+
+.ReactTable .rt-thead .rt-th.-sort-asc {
+  box-shadow: inset 0 3px 0 0 $gold;
+}
+
+.ReactTable .rt-thead .rt-th.-sort-desc {
+  box-shadow: inset 0 -3px 0 0 $gold;
+}
+
+.button-center {
+  display: block;
+  margin: auto;
+  justify-content: center;
+  float: none;
+  margin-bottom: 2rem;
 }

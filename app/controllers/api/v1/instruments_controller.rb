@@ -71,4 +71,21 @@ class Api::V1::InstrumentsController < ApplicationController
     end
   end
 
+  def update
+    response = JSON.parse(request.body.read)
+    if Instrument.exists?(response['instrument_id'])
+      instrument = Instrument.find(response['instrument_id'])
+      instrument[response['column_name']] = response['value']
+      if instrument.save
+        show = Show.find(response['show'])
+        instruments = show.instruments
+        render json: instruments
+      else
+        render json: { error: instrument.errors.full_messages.join(', ') }
+      end
+    else
+      render json: { error: "An error occurred." }
+    end
+  end
+
 end
