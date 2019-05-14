@@ -59,24 +59,35 @@ class ShowPage extends Component {
   }
 
   renderEditable(cellInfo) {
+
+    let handleTableEvent = event => {
+      let numbers = ["unitNumber", "channel", "address"]
+      let column = cellInfo.column.id
+      let value = event.target.innerHTML
+      if (!numbers.includes(column) || parseInt(value) >= 0) {
+        this.updateInstrument(
+          value,
+          cellInfo.original.id,
+          column
+        )
+      } else {
+        this.setState({ error: "The last entry must be a number."})
+      }
+    }
+    
+    let handleKeyPress = event => {
+      let cell = cellInfo
+      if (event.keyCode === 13) {
+        event.target.blur()
+      }
+    }
+
     return (
       <div
         contentEditable
         suppressContentEditableWarning
-        onBlur={event => {
-          let numbers = ["unitNumber", "channel", "address"]
-          let column = cellInfo.column.id
-          let value = event.target.innerHTML
-          if (!numbers.includes(column) || parseInt(value) >= 0) {
-            this.updateInstrument(
-              value,
-              cellInfo.original.id,
-              column
-            )
-          } else {
-            this.setState({ error: "The last entry must be a number."})
-          }
-        }}
+        onKeyDown={handleKeyPress}
+        onBlur={handleTableEvent}
         dangerouslySetInnerHTML={{
           __html: this.state.instruments[cellInfo.index][cellInfo.column.id]
         }}
@@ -170,7 +181,7 @@ class ShowPage extends Component {
           position="Default"
           instruments={this.state.instruments}
           renderEditable={this.renderEditable}
-          length={this.state.instruments.length + 1}
+          length={this.state.instruments.length + 5}
         />
       )
     }
@@ -189,7 +200,7 @@ class ShowPage extends Component {
           <h1 className="text-center">{this.state.show.name}</h1>
           <button className="top-button button-center" onClick={this.toggleForm}>{formButton}</button>
           {instrumentForm}
-          <div>
+          <div id="react-table">
             {error}
             {table}
           </div>

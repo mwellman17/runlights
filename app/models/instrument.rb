@@ -10,7 +10,7 @@ class Instrument < ApplicationRecord
     numericality: { only_integer: true, greater_than: 0 },
     allow_blank: true
   validates :unit_number,
-    numericality: { only_integer: true, greater_than: 0 },
+    numericality: true,
     allow_blank: true
 
   def footprint
