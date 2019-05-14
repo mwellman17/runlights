@@ -14,7 +14,8 @@ class ShowPage extends Component {
       instruments: [],
       fixtures: [],
       showForm: false,
-      error: null
+      error: null,
+      showTable: false
     }
     this.toggleForm = this.toggleForm.bind(this)
     this.handleForm = this.handleForm.bind(this)
@@ -24,6 +25,7 @@ class ShowPage extends Component {
 
   updateInstrument(value, instrument, column) {
     let updatePayload = { value: value, instrument_id: instrument.toString(), column_name: column, show: this.state.show.id }
+    let instruments = this.state.instruments
     fetch(`/api/v1/instruments/${instrument}`, {
       method: 'PUT',
       body: JSON.stringify(updatePayload),
@@ -41,7 +43,17 @@ class ShowPage extends Component {
     })
     .then(response => response.json())
     .then(body => {
-      this.setState({ error: body.error })
+      if (body.error) {
+        this.setState({ error: body.error })
+      } else {
+        let item = instruments.filter(instrument => instrument.id === body.instrument.id)
+        let index = instruments.indexOf(item[0])
+        instruments.splice(index, 1, body.instrument)
+        this.setState({
+          instruments: instruments,
+          error: null
+        })
+      }
     })
     .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
@@ -51,13 +63,20 @@ class ShowPage extends Component {
       <div
         contentEditable
         suppressContentEditableWarning
-        onBlur={e => {
-          this.updateInstrument(
-            e.target.innerHTML,
-            cellInfo.original.id,
-            cellInfo.column.id,
-          )}
-        }
+        onBlur={event => {
+          let numbers = ["unitNumber", "channel", "address"]
+          let column = cellInfo.column.id
+          let value = event.target.innerHTML
+          if (!numbers.includes(column) || parseInt(value) >= 0) {
+            this.updateInstrument(
+              value,
+              cellInfo.original.id,
+              column
+            )
+          } else {
+            this.setState({ error: "The last entry must be a number."})
+          }
+        }}
         dangerouslySetInnerHTML={{
           __html: this.state.instruments[cellInfo.index][cellInfo.column.id]
         }}
@@ -85,7 +104,8 @@ class ShowPage extends Component {
         user: body.user.user,
         show: body.show.show,
         fixtures: body.fixtures,
-        instruments: body.instruments
+        instruments: body.instruments,
+        showTable: true
       })
     })
     .catch(error => console.error(`Error in fetch: ${error.message}`))
@@ -143,6 +163,25 @@ class ShowPage extends Component {
       )
     }
 
+    let table
+    if (this.state.showTable) {
+      table = (
+        <InstrumentsTable
+          position="Default"
+          instruments={this.state.instruments}
+          renderEditable={this.renderEditable}
+          length={this.state.instruments.length + 1}
+        />
+      )
+    }
+
+    let error
+    if (this.state.error) {
+      error = (
+        <p className="text-center">{this.state.error}</p>
+      )
+    }
+
     return(
       <div>
         <BackButton />
@@ -151,11 +190,8 @@ class ShowPage extends Component {
           <button className="top-button button-center" onClick={this.toggleForm}>{formButton}</button>
           {instrumentForm}
           <div>
-            <InstrumentsTable
-              instruments={this.state.instruments}
-              renderEditable={this.renderEditable}
-              length={500}
-            />
+            {error}
+            {table}
           </div>
         </div>
       </div>

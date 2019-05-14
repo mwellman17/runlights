@@ -10,28 +10,70 @@ class InstrumentsTable extends Component {
    render() {
      const data = this.props.instruments;
      return (
-       <div>
+      <div>
+        <h3>{this.props.position}</h3>
          <ReactTable
            data={data}
            showPagination={false}
            defaultPageSize={this.props.length}
            columns={[
              {
-               Header: "Fixture",
-               accessor: "fixture.name"
+               Header: "Unit",
+               accessor: "unitNumber",
+               Cell: this.props.renderEditable,
+               maxWidth: 50,
+               className: "cell-right"
              },
              {
-               Header: "Channel",
-               accessor: "channel",
+               Header: () => (
+                   <div style={{textAlign:"left"}}>Fixture</div>
+                 ),
+               accessor: "fixture.name",
+               className: "cell-left"
+             },
+             {
+               Header: () => (
+                   <div style={{textAlign:"left"}}>Purpose</div>
+                 ),
+               accessor: "purpose",
                Cell: this.props.renderEditable
              },
              {
-               Header: "Address",
+               Header: "Chan",
+               accessor: "channel",
+               Cell: this.props.renderEditable,
+               maxWidth: 50,
+               className: "cell-right"
+             },
+             {
+               Header: "Addr",
                accessor: "address",
+               Cell: this.props.renderEditable,
+               maxWidth: 50,
+               className: "cell-right"
+             },
+             {
+               Header: () => (
+                   <div style={{textAlign:"left"}}>Ckt</div>
+                 ),
+               accessor: "circuit",
+               Cell: this.props.renderEditable,
+               maxWidth: 50
+             },
+             {
+               Header: () => (
+                   <div style={{textAlign:"left"}}>Accessories</div>
+                 ),
+               accessor: "accessory",
                Cell: this.props.renderEditable
              }
            ]}
            className="-striped -highlight"
+           defaultSorted={[
+             {
+              id: 'channel'
+             }
+           ]}
          />
        </div>
      );

@@ -77,9 +77,7 @@ class Api::V1::InstrumentsController < ApplicationController
       instrument = Instrument.find(response['instrument_id'])
       instrument[response['column_name']] = response['value']
       if instrument.save
-        show = Show.find(response['show'])
-        instruments = show.instruments
-        render json: instruments
+        render json: instrument
       else
         render json: { error: instrument.errors.full_messages.join(', ') }
       end
