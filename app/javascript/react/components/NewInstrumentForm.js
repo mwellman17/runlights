@@ -82,6 +82,7 @@ class NewInstrumentForm extends Component {
 
     return(
       <div>
+        <hr/>
         <h2 className="text-center">Add Instruments</h2>
         <form className="form">
         <label htmlFor="fixtures">Select a Fixture:</label>
