@@ -24,7 +24,7 @@ class InstrumentsTable extends Component {
              accessor: "unit_number",
              Cell: this.props.renderEditable,
              maxWidth: 50,
-             className: "cell-right",
+             className: "cell-right unit_number",
              type: "tel"
            },
            {
@@ -32,21 +32,22 @@ class InstrumentsTable extends Component {
                  <div style={{textAlign:"left"}}>Fixture</div>
                ),
              accessor: "fixture.name",
-             className: "cell-left"
+             className: "cell-left fixture"
            },
            {
              Header: () => (
                  <div style={{textAlign:"left"}}>Purpose</div>
                ),
              accessor: "purpose",
-             Cell: this.props.renderEditable
+             Cell: this.props.renderEditable,
+             className: "cell-left purpose"
            },
            {
              Header: "Chan",
              accessor: "channel",
              Cell: this.props.renderEditable,
              maxWidth: 50,
-             className: "cell-right",
+             className: "cell-right channel",
              type: "tel"
            },
            {
@@ -54,7 +55,7 @@ class InstrumentsTable extends Component {
              accessor: "address",
              Cell: this.props.renderEditable,
              maxWidth: 50,
-             className: "cell-right",
+             className: "cell-right address",
              type: "tel"
            },
            {
@@ -63,14 +64,16 @@ class InstrumentsTable extends Component {
                ),
              accessor: "circuit",
              Cell: this.props.renderEditable,
-             maxWidth: 50
+             maxWidth: 50,
+             className: "cell-left circuit"
            },
            {
              Header: () => (
                  <div style={{textAlign:"left"}}>Accessories</div>
                ),
              accessor: "accessory",
-             Cell: this.props.renderEditable
+             Cell: this.props.renderEditable,
+             className: "cell-left accessory"
            }
           ]}
           className="-striped -highlight"
