@@ -74,10 +74,25 @@ class ShowPage extends Component {
         this.setState({ error: "The last entry must be a number."})
       }
     }
-    
+
     let handleKeyPress = event => {
-      let cell = cellInfo
-      if (event.keyCode === 13) {
+      let parent = event.target.parentElement.parentElement.parentElement
+      if (event.keyCode === 13 || event.keyCode === 40) {
+        event.preventDefault()
+        if (parent.nextElementSibling.getElementsByClassName(cellInfo.column.id)[0].children[0].tagName !== "DIV") {
+          event.target.blur()
+        } else {
+          parent.nextElementSibling.getElementsByClassName(cellInfo.column.id)[0].children[0].focus()
+        }
+      } else if (event.keyCode === 38) {
+        event.preventDefault()
+        if (!parent.previousElementSibling) {
+          event.target.blur()
+        } else {
+          parent.previousElementSibling.getElementsByClassName(cellInfo.column.id)[0].children[0].focus()
+        }
+      } else if (event.keyCode === 27) {
+        event.preventDefault()
         event.target.blur()
       }
     }
