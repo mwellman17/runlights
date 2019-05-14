@@ -82,7 +82,7 @@ class FixtureIndexContainer extends Component {
         this.searchFetch(newSearchString)
       }
       .bind(this),
-      1000
+      650
     );
   }
 
