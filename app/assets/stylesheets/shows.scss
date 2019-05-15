@@ -31,3 +31,17 @@
 .rt-th {
   background-color: inherit;
 }
+
+.alertify .ajs-dialog,
+.alertify .ajs-header,
+.alertify .ajs-footer,
+.alertify .ajs-content {
+  background-color: $gold;
+  border: none;
+  color: black;
+  font-family: inherit;
+}
+
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok {
+  color: $dark-red;
+}

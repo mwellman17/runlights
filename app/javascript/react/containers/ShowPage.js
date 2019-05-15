@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import BackButton from '../components/BackButton'
 import NewInstrumentForm from '../components/NewInstrumentForm'
 import InstrumentsTable from '../components/InstrumentsTable'
+import alertify from 'alertifyjs'
 
 class ShowPage extends Component {
   constructor(props) {
@@ -21,6 +22,8 @@ class ShowPage extends Component {
     this.handleForm = this.handleForm.bind(this)
     this.renderEditable = this.renderEditable.bind(this);
     this.updateInstrument = this.updateInstrument.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+    this.confirmDelete = this.confirmDelete.bind(this)
   }
 
   updateInstrument(value, instrument, column) {
@@ -110,6 +113,53 @@ class ShowPage extends Component {
     );
   }
 
+  confirmDelete(row) {
+    alertify.defaults.transition = 'none'
+    alertify.defaults.glossary = {
+      title:'Instrument Handler',
+      ok: 'Yes',
+      cancel: 'Cancel'
+    }
+
+    let handleDelete = () => {
+      this.handleDelete(row)
+    }
+
+    alertify.confirm('Are you sure you want to delete this instrument?\nThis action cannot be undone.', handleDelete).set('defaultFocus', 'cancel')
+  }
+
+  handleDelete(row) {
+    let payload = { instrument_id: row.id }
+    let instruments = this.state.instruments
+    fetch(`/api/v1/instruments/${row.id}`, {
+      method: 'DELETE',
+      body: JSON.stringify(payload),
+      credentials: 'same-origin',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+    })
+    .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        let errorMessage = `${response.status} (${response.statusText})`,
+        error = new Error(errorMessage);
+        throw(error);
+      }
+    })
+    .then(response => response.json())
+    .then(body => {
+      if (body.error){
+        this.setState({ error: body.error })
+      } else {
+        let item = instruments.filter(instrument => instrument.id === body.instrument.id)
+        let index = instruments.indexOf(item[0])
+        instruments.splice(index, 1)
+        this.setState({ instruments: instruments })
+      }
+    })
+    .catch(error => console.error(`Error in fetch: ${error.message}`));
+  }
+
   componentDidMount() {
     fetch(`/api/v1/shows/${this.props.params.id}`,
       { credentials: 'same-origin' })
@@ -150,13 +200,13 @@ class ShowPage extends Component {
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
     })
     .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            let errorMessage = `${response.status} (${response.statusText})`,
-            error = new Error(errorMessage);
-            throw(error);
-        }
+      if (response.ok) {
+        return response;
+      } else {
+        let errorMessage = `${response.status} (${response.statusText})`,
+        error = new Error(errorMessage);
+        throw(error);
+      }
     })
     .then(response => response.json())
     .then(body => {
@@ -193,10 +243,11 @@ class ShowPage extends Component {
     if (this.state.showTable) {
       table = (
         <InstrumentsTable
-          position="Default"
+          layer="Default"
           instruments={this.state.instruments}
           renderEditable={this.renderEditable}
           length={this.state.instruments.length + 5}
+          handleDelete={this.confirmDelete}
         />
       )
     }
