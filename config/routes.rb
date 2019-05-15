@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :instruments, only: [:create, :update, :destroy]
       resources :shows, only: [:show, :create]
-      resources :fixtures, only: [:index, :create] do
+      resources :fixtures, only: [:index, :create, :destroy] do
         resources :favorites, only: [:create]
       end
       get 'current_user', to: 'users#index'
