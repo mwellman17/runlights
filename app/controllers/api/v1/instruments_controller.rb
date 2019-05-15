@@ -86,4 +86,13 @@ class Api::V1::InstrumentsController < ApplicationController
     end
   end
 
+  def destroy
+    if Instrument.exists?(params['instrument_id'])
+      instrument = Instrument.find(params['instrument_id'])
+      instrument.destroy
+      render json: instrument
+    else
+      render json: { error: "An error occurred." }
+    end
+  end
 end

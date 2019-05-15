@@ -13,7 +13,7 @@ class InstrumentsTable extends Component {
 
      return (
       <div>
-        <h3>{this.props.position}</h3>
+        <h3>{this.props.layer}</h3>
          <ReactTable
           data={data}
           showPagination={false}
@@ -23,7 +23,7 @@ class InstrumentsTable extends Component {
              Header: "Unit",
              accessor: "unit_number",
              Cell: this.props.renderEditable,
-             maxWidth: 50,
+             maxWidth: 60,
              className: "cell-right unit_number",
              type: "tel"
            },
@@ -46,7 +46,7 @@ class InstrumentsTable extends Component {
              Header: "Chan",
              accessor: "channel",
              Cell: this.props.renderEditable,
-             maxWidth: 50,
+             maxWidth: 60,
              className: "cell-right channel",
              type: "tel"
            },
@@ -54,7 +54,7 @@ class InstrumentsTable extends Component {
              Header: "Addr",
              accessor: "address",
              Cell: this.props.renderEditable,
-             maxWidth: 50,
+             maxWidth: 60,
              className: "cell-right address",
              type: "tel"
            },
@@ -64,7 +64,7 @@ class InstrumentsTable extends Component {
                ),
              accessor: "circuit",
              Cell: this.props.renderEditable,
-             maxWidth: 50,
+             maxWidth: 60,
              className: "cell-left circuit"
            },
            {
@@ -74,7 +74,15 @@ class InstrumentsTable extends Component {
              accessor: "accessory",
              Cell: this.props.renderEditable,
              className: "cell-left accessory"
-           }
+           },
+           {
+              Header: '',
+              Cell: row => (
+                <div>
+                  <i onClick={() => this.props.handleDelete(row.original)} className="fas fa-times"></i>
+                </div>
+              )
+            }
           ]}
           className="-striped -highlight"
           defaultSorted={[
@@ -82,6 +90,7 @@ class InstrumentsTable extends Component {
             id: 'channel'
            }
           ]}
+
          />
        </div>
      );
