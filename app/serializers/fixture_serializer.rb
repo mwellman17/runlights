@@ -7,7 +7,7 @@ class FixtureSerializer < ActiveModel::Serializer
 
   def favorite
     if @instance_options[:current_user]
-      user = @instance_options[:current_user].id
+      user = @instance_options[:current_user]
       object.favorites.each do |item|
         if item.user_id == user
           return true

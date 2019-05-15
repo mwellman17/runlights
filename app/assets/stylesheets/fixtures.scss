@@ -1,5 +1,9 @@
 @import 'Colors';
 
+.fixture-list {
+  list-style-type: none;
+}
+
 .fixture.callout.panel {
   background-color: $gold;
   border: 2px solid black;
@@ -103,10 +107,18 @@ button a:hover {
 
 .favorite {
   color: $dark-red;
+  padding-right: .5rem;
 }
 
 .not-favorite {
   color: $dark-gold;
+  padding-right: .5rem;
+}
+
+.fixture-edit {
+  color: $dark-gold;
+  float: right;
+  padding-right: .7rem;
 }
 
 .fixture-delete {

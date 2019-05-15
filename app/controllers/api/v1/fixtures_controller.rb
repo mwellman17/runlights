@@ -17,8 +17,8 @@ class Api::V1::FixturesController < ApplicationController
     if current_user
       user_fixtures = User.find(user_id).fixtures.order(name: :asc)
       render json: {
-        manufacturers: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, serializer: ManufacturerSerializer, current_user: current_user),
-        user_fixtures: ActiveModel::Serializer::CollectionSerializer.new(user_fixtures, serializer: UserFixtureSerializer, current_user: current_user),
+        manufacturers: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, serializer: ManufacturerSerializer, current_user: current_user.id),
+        user_fixtures: ActiveModel::Serializer::CollectionSerializer.new(user_fixtures, serializer: UserFixtureSerializer, current_user: current_user.id),
         user_id: user_id
       }
     else
@@ -75,6 +75,48 @@ class Api::V1::FixturesController < ApplicationController
         end
       end
       render json: fixture, serializer: UserFixtureSerializer
+    else
+      render json: { error: fixture.errors.full_messages.join(', ') }
+    end
+  end
+
+  def update
+    response = JSON.parse(request.body.read)
+    fixture = Fixture.find(response['fixtureDetails']['id'])
+    fixture.name = response['fixtureDetails']['name']
+    fixture.short_name = response['fixtureDetails']['name'].gsub(' ', '')
+    fixture.wattage = response['fixtureDetails']['wattage']
+    fixture.weight = response['fixtureDetails']['weight'].to_i * 0.453592
+    fixture.manual = response['fixtureDetails']['manual']
+    if fixture.save
+      response['fixtureDetails']['modes'].each do |mode|
+        if mode['id']
+          old_mode = Mode.find(mode['id'])
+          old_mode.name = mode['name']
+          old_mode.short_name = mode['name'].gsub(' ', '')
+          old_mode.footprint = mode['footprint']
+          old_mode.save
+        else
+          if mode['name'] == ""
+            mode_name = "default"
+          else
+            mode_name = mode['name']
+          end
+          if mode['footprint'] == ""
+            footprint = 1
+          else
+            footprint = mode['footprint']
+          end
+          mode_attributes = {
+            name: mode_name,
+            short_name: mode_name.gsub(' ', ''),
+            footprint: footprint,
+            fixture: fixture
+          }
+          Mode.create(mode_attributes)
+        end
+      end
+      render json: fixture, serializer: UserFixtureSerializer, current_user: response['user']
     else
       render json: { error: fixture.errors.full_messages.join(', ') }
     end
