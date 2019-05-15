@@ -25,6 +25,11 @@ class UserFixtureCollection extends Component {
           this.props.handleFavorite(fixture.id)
         }
 
+        let handleEdit = (event) => {
+          event.stopPropagation()
+          this.props.handleEdit(fixture)
+        }
+
         let handleDelete = (event) => {
           event.stopPropagation()
           this.props.handleDelete(fixture)
@@ -41,6 +46,7 @@ class UserFixtureCollection extends Component {
             favorite={fixture.favorite}
             handleFavorite={handleFavorite}
             handleDelete={handleDelete}
+            handleEdit={handleEdit}
             user={this.props.user}
           />
         )

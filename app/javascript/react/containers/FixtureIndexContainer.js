@@ -4,6 +4,7 @@ import alertify from 'alertifyjs'
 import ManufacturerTile from '../components/ManufacturerTile'
 import UserFixtureCollection from '../components/UserFixtureCollection'
 import NewFixtureForm from '../components/NewFixtureForm'
+import UpdateFixtureForm from '../components/UpdateFixtureForm'
 import BackButton from '../components/BackButton'
 
 class FixtureIndexContainer extends Component {
@@ -16,7 +17,9 @@ class FixtureIndexContainer extends Component {
       showFixtureForm: false,
       user: null,
       userFixtures: [],
-      error: null
+      error: null,
+      updateFixtureDetails: null,
+      success: null
     }
     this.openAll = this.openAll.bind(this)
     this.closeAll = this.closeAll.bind(this)
@@ -29,6 +32,9 @@ class FixtureIndexContainer extends Component {
     this.searchFetch = this.searchFetch.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.confirmDelete = this.confirmDelete.bind(this)
+    this.handleEdit = this.handleEdit.bind(this)
+    this.confirmUpdate = this.confirmUpdate.bind(this)
+    this.cancelUpdate = this.cancelUpdate.bind(this)
   }
 
   fetchFixtures() {
@@ -153,6 +159,40 @@ class FixtureIndexContainer extends Component {
     .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
 
+  handleEdit(fixture) {
+    for (let property in fixture) {
+      if (fixture.hasOwnProperty(property)) {
+        if (fixture[property] === null) {
+          fixture[property] = ""
+        }
+      }
+    }
+    this.setState({ updateFixtureDetails: fixture })
+  }
+
+  confirmUpdate(fixture) {
+    let userFixtures = this.state.userFixtures
+    let item = userFixtures.filter(oldFixture => oldFixture.id === fixture.id)
+    let index = userFixtures.indexOf(item[0])
+    userFixtures.splice(index, 1, fixture)
+    this.setState({
+      userFixtures: userFixtures,
+      updateFixtureDetails: null,
+      success: "Fixture updated successfully"
+    })
+    setTimeout(
+      function() {
+        this.setState({ success: null });
+      }
+      .bind(this),
+      3000
+    );
+  }
+
+  cancelUpdate() {
+    this.setState({ updateFixtureDetails: null })
+  }
+
   confirmDelete(fixture) {
     alertify.defaults.transition = 'none'
     alertify.defaults.glossary = {
@@ -165,11 +205,16 @@ class FixtureIndexContainer extends Component {
     }
 
     if (fixture.instrument_count === 0) {
-      alertify.confirm(`Delete Fixture ${fixture.name}`, `Are you sure you want to delete ${fixture.name}? This action cannot be undone.`, handleDelete, null).set('defaultFocus', 'cancel')
+      alertify.confirm(`Delete ${fixture.name}`, `Are you sure you want to delete ${fixture.name}? This action cannot be undone.`, handleDelete, null).set('defaultFocus', 'cancel')
     } else {
       let shows = fixture.show_names
-      let showNames = [shows.slice(0, -1).join(', '), shows.slice(-1)[0]].join(shows.length < 2 ? '' : ', and ')
-      alertify.confirm(`Delete Fixture ${fixture.name}`, `WARNING: This fixture is in use in ${showNames}. Clicking YES will delete all ${fixture.instrument_count} instance(s) of this fixture. This action cannot be undone.`, handleDelete, null).set('defaultFocus', 'cancel')
+      let showNames
+      if (shows.length === 1) {
+        showNames = shows[0]
+      } else {
+        showNames = [shows.slice(0, -1).join(', '), shows.slice(-1)[0]].join(shows.length < 3 ? ' and ' : ', and ')
+      }
+      alertify.confirm(`Delete ${fixture.name}`, `WARNING: This fixture is in use in ${showNames}. Clicking YES will delete ${fixture.instrument_count} instance(s) of this fixture. This action cannot be undone.`, handleDelete, null).set('defaultFocus', 'cancel')
     }
   }
 
@@ -218,6 +263,7 @@ class FixtureIndexContainer extends Component {
           handleFavorite={this.handleFavorite}
           user={this.state.user}
           handleDelete={this.confirmDelete}
+          handleEdit={this.handleEdit}
         />
       )
     }
@@ -272,10 +318,29 @@ class FixtureIndexContainer extends Component {
       )
     }
 
+    let updateFixtureForm
+    if (this.state.updateFixtureDetails) {
+      updateFixtureForm = (
+        <UpdateFixtureForm
+          user={this.state.user}
+          fixtureDetails={this.state.updateFixtureDetails}
+          confirmUpdate={this.confirmUpdate}
+          cancelUpdate={this.cancelUpdate}
+        />
+      )
+    }
+
     let error
     if (this.state.error) {
       error = (
         <p className="text-center">{this.state.error}</p>
+      )
+    }
+
+    let success
+    if (this.state.success) {
+      success = (
+        <p className="text-center">{this.state.success}</p>
       )
     }
 
@@ -301,6 +366,8 @@ class FixtureIndexContainer extends Component {
         <div className="row">
           {error}
           {userFixtures}
+          {success}
+          {updateFixtureForm}
           {manufacturers}
         </div>
       </div>

@@ -27,7 +27,7 @@ class FixtureTile extends Component {
     let visibility = "hidden"
     let showIcon = (<i className="fas fa-angle-down"></i>)
     if (this.state.showDetails){
-      visibility = "visible"
+      visibility = "visible fixture-list"
       showIcon = (<i className="fas fa-angle-up"></i>)
     }
 
@@ -85,8 +85,8 @@ class FixtureTile extends Component {
     }
 
     return(
-      <li onClick={this.setVisibility}>
-        {this.props.name} {showIcon} {favorite}
+      <li className="fixture-list" onClick={this.setVisibility}>
+        {favorite} {this.props.name} {showIcon} 
         {details}
       </li>
     )

@@ -27,7 +27,7 @@ class UserFixtureTile extends Component {
     let visibility = "hidden"
     let showIcon = (<i className="fas fa-angle-down"></i>)
     if (this.state.showDetails){
-      visibility = "visible"
+      visibility = "visible fixture-list"
       showIcon = (<i className="fas fa-angle-up"></i>)
     }
 
@@ -88,9 +88,14 @@ class UserFixtureTile extends Component {
       <i onClick={this.props.handleDelete} className="fas fa-times fixture-delete"></i>
     )
 
+    let editButton = (
+      <i onClick={this.props.handleEdit} className="far fa-edit fixture-edit"></i>
+    )
+
     return(
-      <li onClick={this.setVisibility}>
-        {this.props.name} {showIcon} {favorite} {deleteButton}
+      <li className="fixture-list" onClick={this.setVisibility}>
+        {favorite} {this.props.name} {showIcon}
+        {deleteButton} {editButton}
         {details}
       </li>
     )
