@@ -15,10 +15,6 @@ class UserFixtureCollection extends Component {
     this.setState({ showFixtures: !this.state.showFixtures })
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({ showFixtures: props.batch })
-  }
-
   render() {
 
     let fixtures
