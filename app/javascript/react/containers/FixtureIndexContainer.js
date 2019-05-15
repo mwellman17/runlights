@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import ManufacturerTile from '../components/ManufacturerTile'
 import { Link } from 'react-router';
+import alertify from 'alertifyjs'
+import ManufacturerTile from '../components/ManufacturerTile'
+import UserFixtureCollection from '../components/UserFixtureCollection'
 import NewFixtureForm from '../components/NewFixtureForm'
 import BackButton from '../components/BackButton'
 
@@ -13,7 +15,8 @@ class FixtureIndexContainer extends Component {
       searchString: "",
       showFixtureForm: false,
       user: null,
-      userFixtures: null
+      userFixtures: [],
+      error: null
     }
     this.openAll = this.openAll.bind(this)
     this.closeAll = this.closeAll.bind(this)
@@ -24,6 +27,8 @@ class FixtureIndexContainer extends Component {
     this.passFixture = this.passFixture.bind(this)
     this.handleFavorite = this.handleFavorite.bind(this)
     this.searchFetch = this.searchFetch.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+    this.confirmDelete = this.confirmDelete.bind(this)
   }
 
   fetchFixtures() {
@@ -148,18 +153,71 @@ class FixtureIndexContainer extends Component {
     .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
 
+  confirmDelete(fixture) {
+    alertify.defaults.transition = 'none'
+    alertify.defaults.glossary = {
+      ok: 'Yes',
+      cancel: 'Cancel'
+    }
+
+    let handleDelete = () => {
+      this.handleDelete(fixture)
+    }
+
+    if (fixture.instrument_count === 0) {
+      alertify.confirm(`Delete Fixture ${fixture.name}`, `Are you sure you want to delete ${fixture.name}? This action cannot be undone.`, handleDelete, null).set('defaultFocus', 'cancel')
+    } else {
+      let shows = fixture.show_names
+      let showNames = [shows.slice(0, -1).join(', '), shows.slice(-1)[0]].join(shows.length < 2 ? '' : ', and ')
+      alertify.confirm(`Delete Fixture ${fixture.name}`, `WARNING: This fixture is in use in ${showNames}. Clicking YES will delete all ${fixture.instrument_count} instance(s) of this fixture. This action cannot be undone.`, handleDelete, null).set('defaultFocus', 'cancel')
+    }
+  }
+
+  handleDelete(fixture) {
+    let payload = { fixture_id: fixture.id }
+    let userFixtures = this.state.userFixtures
+    fetch(`/api/v1/fixtures/${fixture.id}`, {
+      method: 'DELETE',
+      body: JSON.stringify(payload),
+      credentials: 'same-origin',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+    })
+    .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        let errorMessage = `${response.status} (${response.statusText})`,
+        error = new Error(errorMessage);
+        throw(error);
+      }
+    })
+    .then(response => response.json())
+    .then(body => {
+      if (body.error){
+        this.setState({ error: body.error })
+      } else {
+        let item = userFixtures.filter(fixture => fixture.id === body.fixture.id)
+        let index = userFixtures.indexOf(item[0])
+        userFixtures.splice(index, 1)
+        this.setState({ userFixtures: userFixtures })
+      }
+    })
+    .catch(error => console.error(`Error in fetch: ${error.message}`));
+  }
+
   render() {
 
     let userFixtures
-    if (this.state.userFixtures && this.state.userFixtures.length > 0) {
+    if (this.state.userFixtures.length > 0) {
       userFixtures = (
-        <ManufacturerTile
+        <UserFixtureCollection
           key="user"
           name="User Fixtures"
           fixtures={this.state.userFixtures}
-          batch={this.state.batch}
+          batch={true}
           handleFavorite={this.handleFavorite}
           user={this.state.user}
+          handleDelete={this.confirmDelete}
         />
       )
     }
@@ -214,6 +272,13 @@ class FixtureIndexContainer extends Component {
       )
     }
 
+    let error
+    if (this.state.error) {
+      error = (
+        <p className="text-center">{this.state.error}</p>
+      )
+    }
+
     return(
       <div>
         <BackButton />
@@ -234,6 +299,7 @@ class FixtureIndexContainer extends Component {
             <input type='text' name='searchString' value={this.state.searchString} onChange={this.handleChange} placeholder="Search"/>
           </form>
         <div className="row">
+          {error}
           {userFixtures}
           {manufacturers}
         </div>

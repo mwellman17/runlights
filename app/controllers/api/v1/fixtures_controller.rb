@@ -15,10 +15,10 @@ class Api::V1::FixturesController < ApplicationController
     manufacturers = Manufacturer.all.order(name: :asc)
     user_fixtures = nil
     if current_user
-      user_fixtures = User.find(user_id).fixtures
+      user_fixtures = User.find(user_id).fixtures.order(name: :asc)
       render json: {
-        manufacturers: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, each_serializer: ManufacturerSerializer, current_user: current_user),
-        user_fixtures: ActiveModel::Serializer::CollectionSerializer.new(user_fixtures, each_serializer: FixtureSerializer, current_user: current_user),
+        manufacturers: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, serializer: ManufacturerSerializer, current_user: current_user),
+        user_fixtures: ActiveModel::Serializer::CollectionSerializer.new(user_fixtures, serializer: UserFixtureSerializer, current_user: current_user),
         user_id: user_id
       }
     else
@@ -28,7 +28,7 @@ class Api::V1::FixturesController < ApplicationController
 
   def search
     manufacturers = (Manufacturer.includes(:fixtures).where("fixtures.name ILIKE ?", "%#{params['search_string']}%").references(:fixtures) + Manufacturer.where("name ILIKE ?", "%#{params['search_string']}%")).uniq
-    render json: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, each_serializer: ManufacturerSerializer, current_user: current_user)
+    render json: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, serializer: ManufacturerSerializer, current_user: current_user)
   end
 
   def create
@@ -74,9 +74,19 @@ class Api::V1::FixturesController < ApplicationController
           Mode.create(mode_attributes)
         end
       end
-      render json: fixture, serializer: FixtureSerializer
+      render json: fixture, serializer: UserFixtureSerializer
     else
       render json: { error: fixture.errors.full_messages.join(', ') }
+    end
+  end
+
+  def destroy
+    if Fixture.exists?(params['fixture_id'])
+      fixture = Fixture.find(params['fixture_id'])
+      fixture.destroy
+      render json: fixture
+    else
+      render json: { error: "An error occurred." }
     end
   end
 end
