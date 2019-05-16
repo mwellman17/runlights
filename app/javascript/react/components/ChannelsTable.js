@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactTable from "react-table";
 
-class InstrumentsTable extends Component {
+class ChannelsTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +25,37 @@ class InstrumentsTable extends Component {
           pageSize={this.state.length}
           columns={[
             {
+              Header: "Chan",
+              accessor: "channel",
+              Cell: this.props.renderEditable,
+              maxWidth: 60,
+              className: "cell-right channel",
+              type: "tel"
+            },
+            {
+              Header: "Addr",
+              accessor: "address",
+              Cell: this.props.renderEditable,
+              maxWidth: 60,
+              className: "cell-right address",
+              type: "tel"
+            },
+            {
+              Header: () => (
+                  <div style={{textAlign:"left"}}>Fixture</div>
+                ),
+              accessor: "fixture.name",
+              className: "cell-left fixture"
+            },
+            {
+              Header: () => (
+                  <div style={{textAlign:"left"}}>Purpose</div>
+                ),
+              accessor: "purpose",
+              Cell: this.props.renderEditable,
+              className: "cell-left purpose"
+            },
+            {
               Header: () => (
                   <div style={{textAlign:"left"}}>Position</div>
                 ),
@@ -38,37 +69,6 @@ class InstrumentsTable extends Component {
              Cell: this.props.renderEditable,
              maxWidth: 60,
              className: "cell-right unit_number",
-             type: "tel"
-           },
-           {
-             Header: () => (
-                 <div style={{textAlign:"left"}}>Fixture</div>
-               ),
-             accessor: "fixture.name",
-             className: "cell-left fixture"
-           },
-           {
-             Header: () => (
-                 <div style={{textAlign:"left"}}>Purpose</div>
-               ),
-             accessor: "purpose",
-             Cell: this.props.renderEditable,
-             className: "cell-left purpose"
-           },
-           {
-             Header: "Chan",
-             accessor: "channel",
-             Cell: this.props.renderEditable,
-             maxWidth: 60,
-             className: "cell-right channel",
-             type: "tel"
-           },
-           {
-             Header: "Addr",
-             accessor: "address",
-             Cell: this.props.renderEditable,
-             maxWidth: 60,
-             className: "cell-right address",
              type: "tel"
            },
            {
@@ -116,10 +116,7 @@ class InstrumentsTable extends Component {
           ]}
           defaultSorted={[
             {
-              id: 'position',
-              desc: false
-            }, {
-              id: 'unit_number',
+              id: 'channel',
               desc: false
             }
           ]}
@@ -130,4 +127,4 @@ class InstrumentsTable extends Component {
    }
  }
 
-export default InstrumentsTable;
+export default ChannelsTable;

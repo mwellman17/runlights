@@ -15,7 +15,7 @@ class Api::V1::UsersController < ApplicationController
         user: {
           user_id: current_user.id,
           username: current_user.username,
-          favorites: ActiveModel::Serializer::CollectionSerializer.new(fixtures, each_serializer: FixtureSerializer, current_user: current_user),
+          favorites: ActiveModel::Serializer::CollectionSerializer.new(fixtures, each_serializer: FixtureSerializer, current_user: current_user.id),
           shows: ActiveModel::Serializer::CollectionSerializer.new(current_user.shows, each_serializer: ShowSerializer)
         }
       }

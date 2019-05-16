@@ -129,6 +129,14 @@ class FixtureIndexContainer extends Component {
   passFixture(fixture) {
     fixture.favorite = true
     let userFixtures = this.state.userFixtures.concat(fixture)
+    userFixtures = userFixtures.sort(function(a, b){
+      let nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase()
+      if (nameA < nameB)
+        return -1
+      if (nameA > nameB)
+        return 1
+      return 0
+    })
     this.setState({ userFixtures: userFixtures })
   }
 
@@ -189,7 +197,8 @@ class FixtureIndexContainer extends Component {
     );
   }
 
-  cancelUpdate() {
+  cancelUpdate(event) {
+    event.preventDefault()
     this.setState({ updateFixtureDetails: null })
   }
 

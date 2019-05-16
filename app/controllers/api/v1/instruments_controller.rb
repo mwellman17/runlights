@@ -35,6 +35,7 @@ class Api::V1::InstrumentsController < ApplicationController
         accessory: response['accessory'],
         color: response['color'],
         gobo: response['gobo'],
+        position: response['position'],
         unit_number: unit_number
       })
     if instrument.save
@@ -61,6 +62,7 @@ class Api::V1::InstrumentsController < ApplicationController
             accessory: response['accessory'],
             color: response['color'],
             gobo: response['gobo'],
+            position: response['position'],
             unit_number: unit_number
           })
         end

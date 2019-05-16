@@ -172,7 +172,6 @@ class DashboardContainer extends Component {
           showForm={this.state.newShowForm}
         />
         {newShowTile}
-        {newFixtureTile}
         {success}
         {errors}
         <FavoritesTile
@@ -183,6 +182,7 @@ class DashboardContainer extends Component {
           newShow={this.newFixture}
           showForm={this.state.newFixtureForm}
         />
+        {newFixtureTile}
       </div>
     )
   }
