@@ -37,7 +37,7 @@ class Api::V1::FixturesController < ApplicationController
     fixture_attributes = {
       name: response['name'],
       short_name: response['name'].gsub(' ', ''),
-      wattage: response['wattage'],
+      wattage: response['wattage'].to_i,
       weight: response['weight'].to_i * 0.453592,
       manual: response['manual'],
       user: user_id

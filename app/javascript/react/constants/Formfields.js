@@ -9,6 +9,16 @@ const FORMFIELDS = [
     label: "Purpose",
     number: false
   },
+  {
+     name: "position",
+     label: "Position",
+     number: false
+   },
+ {
+    name: "unitNumber",
+    label: "Unit Number",
+    number: true
+  },
  {
     name: "channel",
     label: "Channel",
@@ -25,11 +35,6 @@ const FORMFIELDS = [
     number: false
   },
  {
-    name: "accessory",
-    label: "Accessory",
-    number: false
-  },
- {
     name: "color",
     label: "Color",
     number: false
@@ -39,11 +44,11 @@ const FORMFIELDS = [
     label: "Gobo",
     number: false
   },
- {
-    name: "unitNumber",
-    label: "Unit Number",
-    number: true
-  }
+  {
+     name: "accessory",
+     label: "Accessory",
+     number: false
+   }
 ]
 
 export default FORMFIELDS

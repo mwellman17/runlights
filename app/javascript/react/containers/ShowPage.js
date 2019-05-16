@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import BackButton from '../components/BackButton'
 import NewInstrumentForm from '../components/NewInstrumentForm'
 import InstrumentsTable from '../components/InstrumentsTable'
+import ChannelsTable from '../components/ChannelsTable'
 import alertify from 'alertifyjs'
 
 class ShowPage extends Component {
@@ -16,7 +17,8 @@ class ShowPage extends Component {
       fixtures: [],
       showForm: false,
       error: null,
-      showTable: false
+      showInstrumentTable: false,
+      showChannelsTable: false
     }
     this.toggleForm = this.toggleForm.bind(this)
     this.handleForm = this.handleForm.bind(this)
@@ -24,6 +26,7 @@ class ShowPage extends Component {
     this.updateInstrument = this.updateInstrument.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.confirmDelete = this.confirmDelete.bind(this)
+    this.toggleTable = this.toggleTable.bind(this)
   }
 
   updateInstrument(value, instrument, column) {
@@ -160,6 +163,13 @@ class ShowPage extends Component {
     .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
 
+  toggleTable() {
+    this.setState({
+      showChannelsTable: !this.state.showChannelsTable,
+      showInstrumentTable: !this.state.showInstrumentTable
+    })
+  }
+
   componentDidMount() {
     fetch(`/api/v1/shows/${this.props.params.id}`,
       { credentials: 'same-origin' })
@@ -181,7 +191,7 @@ class ShowPage extends Component {
         show: body.show.show,
         fixtures: body.fixtures,
         instruments: body.instruments,
-        showTable: true
+        showInstrumentTable: true
       })
     })
     .catch(error => console.error(`Error in fetch: ${error.message}`))
@@ -240,16 +250,31 @@ class ShowPage extends Component {
     }
 
     let table
-    if (this.state.showTable) {
+    if (this.state.showInstrumentTable) {
       table = (
         <InstrumentsTable
-          layer="Default"
+          title="Instrument Schedule"
           instruments={this.state.instruments}
           renderEditable={this.renderEditable}
           length={this.state.instruments.length + 5}
           handleDelete={this.confirmDelete}
         />
       )
+    } else if (this.state.showChannelsTable) {
+      table = (
+        <ChannelsTable
+          title="Channel Hookup"
+          instruments={this.state.instruments}
+          renderEditable={this.renderEditable}
+          length={this.state.instruments.length + 5}
+          handleDelete={this.confirmDelete}
+        />
+      )
+    }
+
+    let tableButton = "Channel View"
+    if (this.state.showChannelsTable) {
+      tableButton = "Instrument View"
     }
 
     let error
@@ -264,7 +289,10 @@ class ShowPage extends Component {
         <BackButton />
         <div>
           <h1 className="text-center">{this.state.show.name}</h1>
-          <button className="top-button button-center" onClick={this.toggleForm}>{formButton}</button>
+          <div className="button-container row">
+            <button className="top-button" onClick={this.toggleForm}>{formButton}</button>
+            <button className="top-button" onClick={this.toggleTable}>{tableButton}</button>
+          </div>
           {instrumentForm}
           <div id="react-table">
             {error}

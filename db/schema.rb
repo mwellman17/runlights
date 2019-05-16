@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_10_145945) do
+ActiveRecord::Schema.define(version: 2019_05_16_133915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2019_05_10_145945) do
     t.float "unit_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "position"
     t.index ["fixture_id"], name: "index_instruments_on_fixture_id"
     t.index ["mode_id"], name: "index_instruments_on_mode_id"
     t.index ["position_id"], name: "index_instruments_on_position_id"

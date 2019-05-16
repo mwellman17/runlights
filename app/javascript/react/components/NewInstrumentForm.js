@@ -8,7 +8,7 @@ class NewInstrumentForm extends Component {
     super(props);
     this.state = {
       showId: this.props.show,
-      quantity: 1,
+      quantity: "",
       fixtureMode: "",
       purpose: "",
       channel: "",

@@ -189,7 +189,7 @@ class UpdateFixtureForm extends Component {
             <button onClick={this.toggleDetails}>{toggleButton}</button>
           </div>
           <div className="new-fixture-button">
-            <button onClick={this.props.cancelUpdate}>Cancel</button>
+            <button onClick={this.props.cancelUpdate} type="submit" name="cancel" id="cancel">Cancel</button>
           </div>
           <div className="new-fixture-button">
           <button onClick={this.handleSubmit} type="submit" name="submit" id="submit">Update</button>
