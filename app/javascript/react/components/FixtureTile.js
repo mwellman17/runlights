@@ -45,8 +45,11 @@ class FixtureTile extends Component {
     if (this.props.wattage) {
       wattage = (<li>{this.props.wattage} watts</li>)
     }
-    if (this.props.weight){
+
+    if (this.props.weight && this.props.creator === "OFL"){
       weight = (<li>{Math.round(this.props.weight * 2.20462)} lbs</li>)
+    } else if (this.props.weight) {
+      weight = (<li>{Math.round(this.props.weight)} lbs</li>)
     }
     if (this.props.manual) {
       manual = <li><a href={this.props.manual} target="_blank">Manual</a></li>
@@ -86,7 +89,7 @@ class FixtureTile extends Component {
 
     return(
       <li className="fixture-list" onClick={this.setVisibility}>
-        {favorite} {this.props.name} {showIcon} 
+        {favorite} {this.props.name} {showIcon}
         {details}
       </li>
     )

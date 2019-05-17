@@ -33,6 +33,14 @@ class ChannelsTable extends Component {
               type: "tel"
             },
             {
+              Header: "Univ",
+              accessor: "universe",
+              Cell: this.props.renderEditable,
+              maxWidth: 60,
+              className: "cell-right address",
+              type: "tel"
+            },
+            {
               Header: "Addr",
               accessor: "address",
               Cell: this.props.renderEditable,
@@ -73,12 +81,22 @@ class ChannelsTable extends Component {
            },
            {
              Header: () => (
-                 <div style={{textAlign:"left"}}>Ckt</div>
+                 <div style={{textAlign:"left"}}>Ckt Name</div>
                ),
-             accessor: "circuit",
+             accessor: "circuit_name",
+             Cell: this.props.renderEditable,
+             maxWidth: 100,
+             className: "cell-left circuit"
+           },
+           {
+             Header: () => (
+                 <div style={{textAlign:"left"}}>Ckt#</div>
+               ),
+             accessor: "circuit_number",
              Cell: this.props.renderEditable,
              maxWidth: 60,
-             className: "cell-left circuit"
+             className: "cell-left circuit",
+             type: "tel"
            },
            {
              Header: () => (

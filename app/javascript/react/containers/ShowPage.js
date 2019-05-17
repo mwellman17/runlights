@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router';
 import BackButton from '../components/BackButton'
 import NewInstrumentForm from '../components/NewInstrumentForm'
 import InstrumentsTable from '../components/InstrumentsTable'
@@ -272,9 +273,9 @@ class ShowPage extends Component {
       )
     }
 
-    let tableButton = "Channel View"
+    let tableButton = "Switch to view: Channels"
     if (this.state.showChannelsTable) {
-      tableButton = "Instrument View"
+      tableButton = "Switch to view: Position"
     }
 
     let error
@@ -285,8 +286,13 @@ class ShowPage extends Component {
     }
 
     return(
-      <div>
-        <BackButton />
+      <div className="show-page">
+        <ul className="top-links">
+          <li><BackButton /></li>
+          <li className="top-links-title">Generate PDF:</li>
+          <li><a href={`/api/v1/shows/${this.state.show.id}/channels`} target="_blank">Channel Hookup</a></li>
+          <li><a href={`/api/v1/shows/${this.state.show.id}/instruments`} target="_blank">Instrument Schedule</a></li>
+        </ul>
         <div>
           <h1 className="text-center">{this.state.show.name}</h1>
           <div className="button-container row">
@@ -294,7 +300,7 @@ class ShowPage extends Component {
             <button className="top-button" onClick={this.toggleTable}>{tableButton}</button>
           </div>
           {instrumentForm}
-          <div id="react-table">
+          <div id="react-table" className="table">
             {error}
             {table}
           </div>

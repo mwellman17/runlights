@@ -53,3 +53,21 @@
 .x-delete:hover {
   color: $dark-red;
 }
+
+.top-links {
+  display: inline-flex;
+  list-style-type: none;
+}
+
+.top-links li {
+  padding-right: 1rem;
+}
+
+.top-links-title {
+  text-align: right;
+  padding-left: 2rem;
+}
+
+.show-page {
+  background-color: $dark-grey;
+}

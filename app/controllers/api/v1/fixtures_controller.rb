@@ -28,7 +28,7 @@ class Api::V1::FixturesController < ApplicationController
 
   def search
     manufacturers = (Manufacturer.includes(:fixtures).where("fixtures.name ILIKE ?", "%#{params['search_string']}%").references(:fixtures) + Manufacturer.where("name ILIKE ?", "%#{params['search_string']}%")).uniq
-    render json: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, serializer: ManufacturerSerializer, current_user: current_user)
+    render json: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, serializer: ManufacturerSerializer, current_user: current_user.id)
   end
 
   def create
@@ -38,7 +38,7 @@ class Api::V1::FixturesController < ApplicationController
       name: response['name'],
       short_name: response['name'].gsub(' ', ''),
       wattage: response['wattage'].to_i,
-      weight: response['weight'].to_i * 0.453592,
+      weight: response['weight'],
       manual: response['manual'],
       user: user_id
     }
@@ -86,11 +86,13 @@ class Api::V1::FixturesController < ApplicationController
     fixture.name = response['fixtureDetails']['name']
     fixture.short_name = response['fixtureDetails']['name'].gsub(' ', '')
     fixture.wattage = response['fixtureDetails']['wattage']
-    fixture.weight = response['fixtureDetails']['weight'].to_i * 0.453592
+    fixture.weight = response['fixtureDetails']['weight']
     fixture.manual = response['fixtureDetails']['manual']
     if fixture.save
+      modes_to_save = []
       response['fixtureDetails']['modes'].each do |mode|
         if mode['id']
+          modes_to_save << mode['id'].to_i
           old_mode = Mode.find(mode['id'])
           old_mode.name = mode['name']
           old_mode.short_name = mode['name'].gsub(' ', '')
@@ -113,9 +115,21 @@ class Api::V1::FixturesController < ApplicationController
             footprint: footprint,
             fixture: fixture
           }
-          Mode.create(mode_attributes)
+          new_mode = Mode.new(mode_attributes)
+          new_mode.save
+          modes_to_save << new_mode.id
         end
       end
+      fixture.modes.each do |mode|
+        if !modes_to_save.include?(mode.id)
+          mode.destroy
+        end
+      end
+      fixture = Fixture.find(fixture.id)
+      if fixture.modes.length == 0
+        Mode.create({ name: "default", short_name: "default", footprint: 1, fixture: fixture })
+      end
+      fixture = Fixture.find(fixture.id)
       render json: fixture, serializer: UserFixtureSerializer, current_user: response['user']
     else
       render json: { error: fixture.errors.full_messages.join(', ') }

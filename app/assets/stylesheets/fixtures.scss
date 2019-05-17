@@ -33,10 +33,11 @@
   margin: auto;
 }
 
-button a {
+button a,
+button a:focus {
   color: black;
 }
-
+button:hover,
 button a:hover {
   color: white;
 }

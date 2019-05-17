@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_16_133915) do
+ActiveRecord::Schema.define(version: 2019_05_17_144319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_133915) do
     t.string "purpose"
     t.integer "channel"
     t.integer "address"
-    t.string "circuit"
+    t.string "circuit_name"
     t.string "accessory"
     t.string "color"
     t.string "gobo"
@@ -55,6 +55,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_133915) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "position"
+    t.integer "universe"
+    t.integer "circuit_number"
     t.index ["fixture_id"], name: "index_instruments_on_fixture_id"
     t.index ["mode_id"], name: "index_instruments_on_mode_id"
     t.index ["position_id"], name: "index_instruments_on_position_id"
@@ -76,14 +78,6 @@ ActiveRecord::Schema.define(version: 2019_05_16_133915) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fixture_id"], name: "index_modes_on_fixture_id"
-  end
-
-  create_table "positions", force: :cascade do |t|
-    t.bigint "show_id", null: false
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["show_id"], name: "index_positions_on_show_id"
   end
 
   create_table "shows", force: :cascade do |t|
