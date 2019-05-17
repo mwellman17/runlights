@@ -37,7 +37,7 @@ class ChannelsTable extends Component {
               accessor: "universe",
               Cell: this.props.renderEditable,
               maxWidth: 60,
-              className: "cell-right address",
+              className: "cell-right universe",
               type: "tel"
             },
             {
@@ -86,7 +86,7 @@ class ChannelsTable extends Component {
              accessor: "circuit_name",
              Cell: this.props.renderEditable,
              maxWidth: 100,
-             className: "cell-left circuit"
+             className: "cell-left circuit_name"
            },
            {
              Header: () => (
@@ -95,7 +95,7 @@ class ChannelsTable extends Component {
              accessor: "circuit_number",
              Cell: this.props.renderEditable,
              maxWidth: 60,
-             className: "cell-left circuit",
+             className: "cell-left circuit_number",
              type: "tel"
            },
            {
