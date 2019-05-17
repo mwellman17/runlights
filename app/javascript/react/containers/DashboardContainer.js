@@ -162,7 +162,7 @@ class DashboardContainer extends Component {
 
 
     return(
-      <div>
+      <div className="homes">
         <h1>Production Dashboard - {this.props.user.username}</h1>
         <ShowsTile
           key="shows"

@@ -14,6 +14,8 @@ Rails.application.routes.draw do
       end
       get 'current_user', to: 'users#index'
       post 'fixtures/search', to: 'fixtures#search'
+      get '/shows/:id/instruments',to: 'shows#instruments'
+      get '/shows/:id/channels',to: 'shows#channels'
     end
   end
 end

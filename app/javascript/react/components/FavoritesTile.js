@@ -50,7 +50,7 @@ class FavoritesTile extends Component {
 
     return(
       <div>
-        <div onClick={this.toggleFixtures} className="fixture column panel callout small-12">
+        <div onClick={this.toggleFixtures} className="fixture column panel callout small-12 dashboard">
         <p>
           FAVORITES
           <i onClick={this.props.newShow} className={addButton}></i>

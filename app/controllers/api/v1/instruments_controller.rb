@@ -11,11 +11,32 @@ class Api::V1::InstrumentsController < ApplicationController
     end
   end
 
+  def fixture_attributes
+    {
+      fixture: fixture,
+      mode: mode,
+      show: show,
+      purpose: response['purpose'],
+      channel: channel,
+      universe: universe,
+      address: address,
+      circuit_name: response['circuitName'],
+      circuit_number: circuit_number,
+      accessory: response['accessory'],
+      color: response['color'],
+      gobo: response['gobo'],
+      position: response['position'],
+      unit_number: unit_number
+    }
+  end
+
   def create
     response = JSON.parse(request.body.read)
     quantity = validate_number(response['quantity'])
     channel = validate_number(response['channel'])
+    universe = validate_number(response['universe'])
     address = validate_number(response['address'])
+    circuit_number = validate_number(response['circuitNumber'])
     unit_number = validate_number(response['unitNumber'])
     if Mode.exists?(response['fixtureMode'])
       mode = Mode.find(response['fixtureMode'])
@@ -24,20 +45,7 @@ class Api::V1::InstrumentsController < ApplicationController
     end
     show = Show.find(response['showId'])
     instruments = []
-    instrument = Instrument.new({
-        fixture: fixture,
-        mode: mode,
-        show: show,
-        purpose: response['purpose'],
-        channel: channel,
-        address: address,
-        circuit: response['circuit'],
-        accessory: response['accessory'],
-        color: response['color'],
-        gobo: response['gobo'],
-        position: response['position'],
-        unit_number: unit_number
-      })
+    instrument = Instrument.new(fixture_attributes)
     if instrument.save
       instruments << instrument
       if quantity
@@ -51,20 +59,7 @@ class Api::V1::InstrumentsController < ApplicationController
           if unit_number
             unit_number += 1
           end
-          instruments << Instrument.create!({
-            fixture: fixture,
-            mode: mode,
-            show: show,
-            purpose: response['purpose'],
-            channel: channel,
-            address: address,
-            circuit: response['circuit'],
-            accessory: response['accessory'],
-            color: response['color'],
-            gobo: response['gobo'],
-            position: response['position'],
-            unit_number: unit_number
-          })
+          instruments << Instrument.create!(fixture_attributes)
         end
       end
       render json: instruments

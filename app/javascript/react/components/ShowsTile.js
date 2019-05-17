@@ -33,7 +33,7 @@ class ShowsTile extends Component {
     }
 
     return(
-      <div onClick={this.toggleShows} className="fixture column panel callout small-12">
+      <div onClick={this.toggleShows} className="fixture column panel callout small-12 dashboard">
         <p>
           SHOWS
           <i onClick={this.props.newShow} className={addButton}></i>

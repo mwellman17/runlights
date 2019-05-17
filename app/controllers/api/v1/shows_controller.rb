@@ -37,4 +37,39 @@ class Api::V1::ShowsController < ApplicationController
       render json: { error: show.errors.full_messages.join(', ') }
     end
   end
+
+  def instruments
+    if Show.exists?(params['id'])
+      show = Show.find(params['id'])
+      if current_user.shows.include?(show)
+        instruments = show.instruments
+        pdf = InstrumentSchedulePdf.new(instruments, show)
+        send_data pdf.render, filename: "#{show.name} Instrument Schedule", type: "application/pdf", disposition: "inline"
+      else
+        nothing_to_show
+      end
+    else
+      nothing_to_show
+    end
+  end
+
+  def channels
+    if Show.exists?(params['id'])
+      show = Show.find(params['id'])
+      if current_user.shows.include?(show)
+        instruments = show.instruments
+        pdf = ChannelHookupPdf.new(instruments, show)
+        send_data pdf.render, filename: "#{show.name} Channel Hookup", type: "application/pdf", disposition: "inline"
+      else
+        nothing_to_show
+      end
+    else
+      nothing_to_show
+    end
+  end
+
+  def nothing_to_show
+    pdf = NothingHerePdf.new
+    send_data pdf.render, filename: "Nothing to show.", type: "application/pdf", disposition: "inline"
+  end
 end
