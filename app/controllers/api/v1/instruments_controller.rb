@@ -11,25 +11,6 @@ class Api::V1::InstrumentsController < ApplicationController
     end
   end
 
-  def fixture_attributes
-    {
-      fixture: fixture,
-      mode: mode,
-      show: show,
-      purpose: response['purpose'],
-      channel: channel,
-      universe: universe,
-      address: address,
-      circuit_name: response['circuitName'],
-      circuit_number: circuit_number,
-      accessory: response['accessory'],
-      color: response['color'],
-      gobo: response['gobo'],
-      position: response['position'],
-      unit_number: unit_number
-    }
-  end
-
   def create
     response = JSON.parse(request.body.read)
     quantity = validate_number(response['quantity'])
@@ -45,7 +26,22 @@ class Api::V1::InstrumentsController < ApplicationController
     end
     show = Show.find(response['showId'])
     instruments = []
-    instrument = Instrument.new(fixture_attributes)
+    instrument = Instrument.new({
+        fixture: fixture,
+        mode: mode,
+        show: show,
+        purpose: response['purpose'],
+        channel: channel,
+        universe: universe,
+        address: address,
+        circuit_name: response['circuitName'],
+        circuit_number: circuit_number,
+        accessory: response['accessory'],
+        color: response['color'],
+        gobo: response['gobo'],
+        position: response['position'],
+        unit_number: unit_number
+      })
     if instrument.save
       instruments << instrument
       if quantity
@@ -59,7 +55,22 @@ class Api::V1::InstrumentsController < ApplicationController
           if unit_number
             unit_number += 1
           end
-          instruments << Instrument.create!(fixture_attributes)
+          instruments << Instrument.create!({
+            fixture: fixture,
+            mode: mode,
+            show: show,
+            purpose: response['purpose'],
+            channel: channel,
+            address: address,
+            universe: universe,
+            circuit_name: response['circuitName'],
+            circuit_number: circuit_number,
+            accessory: response['accessory'],
+            color: response['color'],
+            gobo: response['gobo'],
+            position: response['position'],
+            unit_number: unit_number
+          })
         end
       end
       render json: instruments
