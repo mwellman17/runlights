@@ -1,5 +1,5 @@
 class FixturesController < ApplicationController
-  before_action :authenticate_user!, except: []
+  before_action :authenticate_user!, except: [:index]
 
   def index
   end
