@@ -22,13 +22,22 @@ class Api::V1::FixturesController < ApplicationController
         user_id: user_id
       }
     else
-      render json: Manufacturer.all.order(name: :asc)
+      render json: {
+        manufacturers: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, serializer: ManufacturerSerializer, current_user: nil),
+        user_fixtures: [],
+        user_id: nil
+      }
     end
   end
 
   def search
+    if current_user
+      user_id = current_user.id
+    else
+      user_id = nil
+    end
     manufacturers = (Manufacturer.includes(:fixtures).where("fixtures.name ILIKE ?", "%#{params['search_string']}%").references(:fixtures) + Manufacturer.where("name ILIKE ?", "%#{params['search_string']}%")).uniq
-    render json: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, serializer: ManufacturerSerializer, current_user: current_user.id)
+    render json: ActiveModel::Serializer::CollectionSerializer.new(manufacturers, serializer: ManufacturerSerializer, current_user: user_id)
   end
 
   def create
