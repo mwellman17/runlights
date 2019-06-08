@@ -12,6 +12,7 @@
     "fstream": "^1.0.12",
     "js-yaml": "^3.13.1",
     "prop-types": "~15.6.0",
+    "querystringify": "^2.1.1",
     "react": "~16.8.6",
     "react-dom": "~16.8.6",
     "react-router": "3.2.1",
