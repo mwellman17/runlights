@@ -1,5 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Manufacturer, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should have_valid(:name).when("Vari-Lite") }
+  it { should_not have_valid(:name).when(nil,"") }
 end
