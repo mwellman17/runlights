@@ -1,5 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Show, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should have_valid(:name).when("PAX East") }
+  it { should_not have_valid(:name).when(nil,"") }
 end
