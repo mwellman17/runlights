@@ -19,7 +19,8 @@ class ShowPage extends Component {
       showForm: false,
       error: null,
       showInstrumentTable: false,
-      showChannelsTable: false
+      showChannelsTable: false,
+      showAccessories: false
     }
     this.toggleForm = this.toggleForm.bind(this)
     this.handleForm = this.handleForm.bind(this)
@@ -28,6 +29,7 @@ class ShowPage extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.confirmDelete = this.confirmDelete.bind(this)
     this.toggleTable = this.toggleTable.bind(this)
+    this.toggleAccessories = this.toggleAccessories.bind(this)
   }
 
   updateInstrument(value, instrument, column) {
@@ -171,6 +173,10 @@ class ShowPage extends Component {
     })
   }
 
+  toggleAccessories() {
+    this.setState({ showAccessories: !this.state.showAccessories })
+  }
+
   componentDidMount() {
     fetch(`/api/v1/shows/${this.props.params.id}`,
       { credentials: 'same-origin' })
@@ -259,6 +265,7 @@ class ShowPage extends Component {
           renderEditable={this.renderEditable}
           length={this.state.instruments.length + 5}
           handleDelete={this.confirmDelete}
+          showAccessories={this.state.showAccessories}
         />
       )
     } else if (this.state.showChannelsTable) {
@@ -269,6 +276,7 @@ class ShowPage extends Component {
           renderEditable={this.renderEditable}
           length={this.state.instruments.length + 5}
           handleDelete={this.confirmDelete}
+          showAccessories={this.state.showAccessories}
         />
       )
     }
@@ -276,6 +284,11 @@ class ShowPage extends Component {
     let tableButton = "Switch to view: Channels"
     if (this.state.showChannelsTable) {
       tableButton = "Switch to view: Position"
+    }
+
+    let accessoryButton = "Show Accessory Columns"
+    if (this.state.showAccessories) {
+      accessoryButton = "Hide Accessory Columns"
     }
 
     let error
@@ -298,6 +311,7 @@ class ShowPage extends Component {
           <div className="button-container row">
             <button className="top-button" onClick={this.toggleForm}>{formButton}</button>
             <button className="top-button" onClick={this.toggleTable}>{tableButton}</button>
+            <button className="top-button" onClick={this.toggleAccessories}>{accessoryButton}</button>
           </div>
           {instrumentForm}
           <div id="react-table" className="table">

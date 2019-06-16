@@ -5,12 +5,16 @@ class ChannelsTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      length: this.props.length
+      length: this.props.length,
+      showAccessories: false
     }
    }
 
    componentWillReceiveProps(nextProps) {
-     this.setState({ length: nextProps.length })
+     this.setState({
+       length: nextProps.length,
+       showAccessories: nextProps.showAccessories
+     })
    }
 
    render() {
@@ -103,6 +107,7 @@ class ChannelsTable extends Component {
                  <div style={{textAlign:"left"}}>Color</div>
                ),
              accessor: "color",
+             show: this.state.showAccessories,
              Cell: this.props.renderEditable,
              className: "cell-left color"
            },
@@ -111,6 +116,7 @@ class ChannelsTable extends Component {
                  <div style={{textAlign:"left"}}>Gobo</div>
                ),
              accessor: "gobo",
+             show: this.state.showAccessories,
              Cell: this.props.renderEditable,
              className: "cell-left gobo"
            },
@@ -119,6 +125,7 @@ class ChannelsTable extends Component {
                  <div style={{textAlign:"left"}}>Accessories</div>
                ),
              accessor: "accessory",
+             show: this.state.showAccessories,
              Cell: this.props.renderEditable,
              minWidth: 150,
              className: "cell-left accessory"
