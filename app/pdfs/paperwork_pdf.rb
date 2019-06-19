@@ -24,10 +24,10 @@ class PaperworkPdf < Prawn::Document
       :align => :left,
       :style => :bold
     text_box Time.now.strftime("%m/%d/%Y"),
-      align: :right,
+      :align => :right,
       :style => :bold
     text @paperwork_type,
-      align: :center,
+      :align => :center,
       :style => :bold,
       :size => 20
   end
