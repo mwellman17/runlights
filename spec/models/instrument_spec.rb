@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Instrument, type: :model do
+  it { should belong_to(:show) }
+  it { should belong_to(:fixture) }
+  it { should belong_to(:mode) }
+
   it { should have_valid(:channel).when(17) }
   it { should_not have_valid(:channel).when("banana") }
 

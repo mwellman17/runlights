@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Mode, type: :model do
+  it { should belong_to(:fixture) }
+  it { should have_many(:instruments) }
+
   it { should have_valid(:name).when("standard") }
   it { should_not have_valid(:name).when(nil,"") }
 
