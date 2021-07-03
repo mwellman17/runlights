@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import FixtureTile from './FixtureTile'
-import { Link } from 'react-router';
 
 class ManufacturerTile extends Component {
   constructor(props) {

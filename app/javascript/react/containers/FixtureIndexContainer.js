@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router';
 import alertify from 'alertifyjs'
 import ManufacturerTile from '../components/ManufacturerTile'
 import UserFixtureCollection from '../components/UserFixtureCollection'

@@ -43,17 +43,7 @@ class Api::V1::ShowsController < ApplicationController
       show = Show.find(params['id'])
       if current_user.shows.include?(show)
         instruments = show.instruments.sort_by { |a| [a.position.nil? ? 1 : 0, a.position.blank? ? 1 : 0, a.position, a.unit_number ? 1 : 0, a.unit_number] }
-        data = [[
-          "Position",
-          "U#",
-          "Fixture",
-          "Purpose",
-          "Chan",
-          "Addr",
-          "Ckt",
-          "C#",
-          "Acc"
-        ]]
+        data = [%w[Position U# Fixture Purpose Chan Addr Ckt C# Acc]]
 
         instruments.each do |instrument|
           if instrument.unit_number && instrument.unit_number * 10 % 10 == 0
@@ -88,17 +78,7 @@ class Api::V1::ShowsController < ApplicationController
       show = Show.find(params['id'])
       if current_user.shows.include?(show)
         instruments = show.instruments.sort_by { |a| [a.channel ? 0 : 1, a.channel] }
-        data = [[
-          "Chan",
-          "Addr",
-          "Fixture",
-          "Purpose",
-          "Position",
-          "U#",
-          "Ckt",
-          "C#",
-          "Acc"
-        ]]
+        data = [%w[Chan Addr Fixture Purpose Position U# Ckt C# Acc]]
 
         instruments.each do |instrument|
           if instrument.unit_number && instrument.unit_number * 10 % 10 == 0

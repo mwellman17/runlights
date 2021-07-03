@@ -1,9 +1,11 @@
 import React from 'react';
-import { browserHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
 const BackButton = () => {
+  const history = useHistory();
+
   return(
-      <a className="back-button" onClick={browserHistory.goBack}>Back</a>
+      <a className="back-button" onClick={() => history.goBack()}>Back</a>
   )
 }
 

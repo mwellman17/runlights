@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router';
 import BackButton from '../components/BackButton'
 import NewInstrumentForm from '../components/NewInstrumentForm'
 import InstrumentsTable from '../components/InstrumentsTable'
@@ -178,7 +177,9 @@ class ShowPage extends Component {
   }
 
   componentDidMount() {
-    fetch(`/api/v1/shows/${this.props.params.id}`,
+    const { id } = this.props.match.params
+
+    fetch(`/api/v1/shows/${id}`,
       { credentials: 'same-origin' })
     .then(response => {
       if (response.ok) {
