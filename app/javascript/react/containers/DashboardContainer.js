@@ -36,7 +36,6 @@ class DashboardContainer extends Component {
   }
 
   handleNewShow(formPayload){
-    let body =
     fetch("/api/v1/shows", {
     method: "POST",
     credentials: 'same-origin',
