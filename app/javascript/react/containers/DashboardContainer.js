@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router';
 import FavoritesTile from '../components/FavoritesTile'
 import ShowsTile from '../components/ShowsTile'
 import NewShowTile from '../components/NewShowTile'

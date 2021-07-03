@@ -1,19 +1,18 @@
 import React from 'react';
-import { Router, browserHistory, Route, IndexRoute } from 'react-router';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import HomePage from './HomePage'
 import FixtureIndexContainer from './FixtureIndexContainer'
-import NewFixtureForm from '../components/NewFixtureForm'
 import ShowPage from './ShowPage'
 
-const App = props => {
-  return(
-
-  <Router history={browserHistory}>
-    <Route path='/' component={HomePage} />
-    <Route path='/fixtures' component={FixtureIndexContainer} />
-    <Route path='/shows/:id' component={ShowPage} />
-  </Router>
-
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route path='/shows/:id' component={ShowPage} />
+        <Route path='/fixtures' component={FixtureIndexContainer} />
+        <Route path='/' component={HomePage} />
+      </Switch>
+    </BrowserRouter>
   )
 }
 

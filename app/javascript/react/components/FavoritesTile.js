@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import FixtureTile from './FixtureTile'
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 class FavoritesTile extends Component {
   constructor(props) {

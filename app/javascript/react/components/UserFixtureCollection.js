@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import UserFixtureTile from './UserFixtureTile'
-import { Link } from 'react-router';
 
 class UserFixtureCollection extends Component {
   constructor(props) {
