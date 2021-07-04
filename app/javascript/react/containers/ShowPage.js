@@ -4,6 +4,9 @@ import NewInstrumentForm from '../components/NewInstrumentForm'
 import InstrumentsTable from '../components/InstrumentsTable'
 import ChannelsTable from '../components/ChannelsTable'
 import alertify from 'alertifyjs'
+import { Modal } from 'antd'
+import { EditOutlined } from '@ant-design/icons'
+import NewShowTile from '../components/NewShowTile'
 
 class ShowPage extends Component {
   constructor(props) {
@@ -11,7 +14,8 @@ class ShowPage extends Component {
     this.state = {
       user: {},
       show: {
-        name: ""
+        name: "",
+        shareable: false
       },
       instruments: [],
       fixtures: [],
@@ -19,7 +23,8 @@ class ShowPage extends Component {
       error: null,
       showInstrumentTable: false,
       showChannelsTable: false,
-      showAccessories: false
+      showAccessories: false,
+      editShow: false,
     }
     this.toggleForm = this.toggleForm.bind(this)
     this.handleForm = this.handleForm.bind(this)
@@ -242,6 +247,45 @@ class ShowPage extends Component {
     .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
 
+  showEdit = () => {
+    this.setState({ editShow: true })
+  }
+  hideEdit = () => {
+    this.setState({ editShow: false })
+  }
+
+  handleEdit = (formPayload) => {
+    fetch(`/api/v1/shows/${this.state.show.id}`, {
+      method: "PUT",
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formPayload)
+    })
+    .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        let errorMessage = `${response.status} (${response.statusText})`,
+          error = new Error(errorMessage);
+        throw(error);
+      }
+    })
+    .then(response => response.json())
+    .then(body => {
+      if(body.error){
+        this.setState({ errors: body.error })
+      } else {
+        this.setState({
+          show: body.show,
+          editShow: false,
+          errors: null
+        })
+      }
+    })
+    .catch(error => console.error(`Error in fetch: ${error.message}`));
+  }
+
+
   render() {
     let instrumentForm
     let formButton = "Add Instruments"
@@ -308,7 +352,13 @@ class ShowPage extends Component {
           <li><a href={`/api/v1/shows/${this.state.show.id}/instruments`} target="_blank">Instrument Schedule</a></li>
         </ul>
         <div>
-          <h1 className="text-center">{this.state.show.name}</h1>
+          <h1 className="text-center">
+            {this.state.show.name}
+            <EditOutlined className="edit-show" onClick={this.showEdit}/>
+          </h1>
+          <Modal d visible={this.state.editShow} onCancel={this.hideEdit} footer={null}>
+            <NewShowTile handlePayload={this.handleEdit} userId={this.state.user.id} show={this.state.show}/>
+          </Modal>
           <div className="button-container row">
             <button className="top-button" onClick={this.toggleForm}>{formButton}</button>
             <button className="top-button" onClick={this.toggleTable}>{tableButton}</button>

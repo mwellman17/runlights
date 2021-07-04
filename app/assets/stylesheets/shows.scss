@@ -71,3 +71,20 @@
 .show-page {
   background-color: $dark-grey;
 }
+
+.edit-show {
+  font-size: 30px;
+  padding-left: 15px;
+  color: $blue-grey;
+  &:hover {
+    color: $darkblue-grey;
+  }
+}
+
+.ant-modal-body {
+  background-color: $dark-grey;
+}
+
+.ant-modal-close-x {
+  color: $gold;
+}

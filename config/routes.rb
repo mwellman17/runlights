@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :instruments, only: [:create, :update, :destroy]
-      resources :shows, only: [:show, :create]
+      resources :shows, only: [:show, :create, :update]
       resources :fixtures, only: [:index, :create, :update, :destroy] do
         resources :favorites, only: [:create]
       end

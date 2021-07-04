@@ -1,5 +1,5 @@
 class Api::V1::ShowsController < ApplicationController
-  before_action :authenticate_user!, except: []
+  before_action :authenticate_user!, except: [:channels, :instruments]
   protect_from_forgery unless: -> { request.format.json? }
   serialization_scope :current_user
 
@@ -29,8 +29,9 @@ class Api::V1::ShowsController < ApplicationController
   def create
     response = JSON.parse(request.body.read)
     name = response['name']
+    shareable = response["shareable"]
     user = User.find(response['user'])
-    show = Show.new({ user: user, name: name })
+    show = Show.new({ user: user, name: name, shareable: shareable })
     if show.save
       render json: show
     else
@@ -38,10 +39,26 @@ class Api::V1::ShowsController < ApplicationController
     end
   end
 
+  def update
+    response = JSON.parse(request.body.read)
+    show = Show.find(request.params[:id])
+    if show
+      show.name = response['name']
+      show.shareable = response['shareable']
+      if show.save
+        render json: show
+      else
+        render json: { error: show.errors.full_messages.join(', ') }
+      end
+    else
+      render json: { error: "Not Found" }
+    end
+  end
+
   def instruments
     if Show.exists?(params['id'])
       show = Show.find(params['id'])
-      if current_user.shows.include?(show)
+      if show.is_shareable? || current_user&.shows&.include?(show)
         instruments = show.instruments.sort_by { |a| [a.position.nil? ? 1 : 0, a.position.blank? ? 1 : 0, a.position, a.unit_number ? 1 : 0, a.unit_number] }
         data = [%w[Position U# Fixture Purpose Chan Addr Ckt C# Acc]]
 
@@ -76,7 +93,7 @@ class Api::V1::ShowsController < ApplicationController
   def channels
     if Show.exists?(params['id'])
       show = Show.find(params['id'])
-      if current_user.shows.include?(show)
+      if show.is_shareable? || current_user&.shows&.include?(show)
         instruments = show.instruments.sort_by { |a| [a.channel ? 0 : 1, a.channel] }
         data = [%w[Chan Addr Fixture Purpose Position U# Ckt C# Acc]]
 

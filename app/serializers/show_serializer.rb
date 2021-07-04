@@ -1,3 +1,3 @@
 class ShowSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :name, :shareable
 end
