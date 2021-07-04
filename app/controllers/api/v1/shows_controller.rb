@@ -80,7 +80,8 @@ class Api::V1::ShowsController < ApplicationController
             "#{instrument.color} #{instrument.gobo} #{instrument.accessory}"
           ]]
         end
-        pdf = PaperworkPdf.new(data, show, "Instrument Schedule")
+        link = "https://runlights.herokuapp.com/api/v1/shows/#{show.id}/instruments"
+        pdf = PaperworkPdf.new(data, show, "Instrument Schedule", link)
         send_data pdf.render, filename: "#{show.name} Instrument Schedule", type: "application/pdf", disposition: "inline"
       else
         nothing_to_show
@@ -115,7 +116,8 @@ class Api::V1::ShowsController < ApplicationController
             "#{instrument.color} #{instrument.gobo} #{instrument.accessory}"
           ]]
         end
-        pdf = PaperworkPdf.new(data, show, "Channel Hookup")
+        link = "https://runlights.herokuapp.com/api/v1/shows/#{show.id}/channels"
+        pdf = PaperworkPdf.new(data, show, "Channel Hookup", link)
         send_data pdf.render, filename: "#{show.name} Channel Hookup", type: "application/pdf", disposition: "inline"
       else
         nothing_to_show
